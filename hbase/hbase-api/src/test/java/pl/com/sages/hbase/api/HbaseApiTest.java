@@ -16,7 +16,7 @@ import static pl.com.sages.hbase.api.HbaseConfigurationFactory.getConfiguration;
 
 public class HbaseApiTest {
 
-    public static final String TABLE_NAME = "test";
+    public static final String TABLE_NAME = "test_" + System.currentTimeMillis();
     public static final String FAMILY_NAME = "info";
 
     private HBaseAdmin admin;
