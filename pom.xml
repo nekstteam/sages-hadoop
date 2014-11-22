@@ -18,11 +18,13 @@
 
         <!--<hbase.version>0.99.0</hbase.version>-->
         <hbase.version>0.98.0-hadoop2</hbase.version>
+        <mahout.version>0.9</mahout.version>
         <!--<hbase.version>0.98.0-hadoop1</hbase.version>-->
     </properties>
 
     <modules>
         <module>hbase</module>
+        <module>mahout</module>
     </modules>
 
     <dependencyManagement>
@@ -39,6 +41,13 @@
                 <groupId>org.apache.hbase</groupId>
                 <artifactId>hbase-client</artifactId>
                 <version>${hbase.version}</version>
+            </dependency>
+
+            <!--Mahout-->
+            <dependency>
+                <groupId>org.apache.mahout</groupId>
+                <artifactId>mahout-core</artifactId>
+                <version>${mahout.version}</version>
             </dependency>
 
             <!--Testy-->
