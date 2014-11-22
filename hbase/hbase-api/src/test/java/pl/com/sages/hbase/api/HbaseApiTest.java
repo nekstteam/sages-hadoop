@@ -37,20 +37,19 @@ public class HbaseApiTest {
 
     @After
     public void deleteTable() throws Exception {
-        admin.disableTable("test");
-        admin.deleteTable("test");
+        admin.disableTable(TABLE_NAME);
+        admin.deleteTable(TABLE_NAME);
     }
 
     @Test
     public void shouldPutDataOnHbase() throws Exception {
         //given
-        Configuration configuration = getConfiguration();
-
         HTableInterface users = new HTable(configuration, TABLE_NAME);
         Put put = new Put(Bytes.toBytes("id"));
         put.add(Bytes.toBytes(FAMILY_NAME),
                 Bytes.toBytes("cell"),
                 Bytes.toBytes("nasza testowa wartość"));
+
         //when
         users.put(put);
 
