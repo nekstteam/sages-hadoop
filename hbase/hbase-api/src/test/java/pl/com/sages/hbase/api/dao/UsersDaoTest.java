@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.com.sages.hbase.api.HbaseConfigurationFactory.getConfiguration;
 
@@ -39,6 +41,21 @@ public class UsersDaoTest {
         assertThat(findedUser.getForename()).isEqualTo(FORENAME);
         assertThat(findedUser.getSurname()).isEqualTo(SURNAME);
         assertThat(findedUser.getPassword()).isEqualTo(PASSWORD);
+    }
+
+    @Test
+    public void shouldFindAllUser() throws Exception {
+        //given
+        usersDao.save(FORENAME,SURNAME,"1",PASSWORD);
+        usersDao.save(FORENAME,SURNAME,"2",PASSWORD);
+        usersDao.save(FORENAME,SURNAME,"3",PASSWORD);
+
+        //when
+        List<User> users = usersDao.findAll();
+
+        //then
+        assertThat(users).isNotNull();
+        assertThat(users.size()).isGreaterThan(3);
     }
 
 }
