@@ -34,37 +34,6 @@ public class CountUsersTest {
     }
 
     @Test
-    public void shouldInsertBulkData() throws Exception {
-        //given
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("users/users.csv");
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String delimeter = ";";
-
-        while ((line = br.readLine()) != null) {
-
-            String[] userData = line.split(delimeter);
-
-            User user = new User();
-            user.setForename(userData[0]);
-            user.setSurname(userData[1]);
-            user.setEmail(userData[2]);
-            user.setPassword(userData[3]);
-
-            usersDao.save(user);
-
-        }
-
-        br.close();
-
-        //when
-
-        //then
-        System.out.println("Done");
-    }
-
-    @Test
     public void shouldRunMapReduce() throws Exception {
         //given
         Job job = new Job(configuration, "Count Users");
