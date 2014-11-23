@@ -1,7 +1,6 @@
 package pl.com.sages.hbase.mapred.users.count;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
@@ -11,12 +10,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 import org.junit.Before;
 import org.junit.Test;
-import pl.com.sages.hbase.api.dao.User;
 import pl.com.sages.hbase.api.dao.UsersDao;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.com.sages.hbase.api.HbaseConfigurationFactory.getConfiguration;
@@ -24,13 +18,10 @@ import static pl.com.sages.hbase.api.HbaseConfigurationFactory.getConfiguration;
 public class CountUsersTest {
 
     private Configuration configuration;
-    private UsersDao usersDao;
 
     @Before
     public void before() {
         configuration = getConfiguration();
-        HTablePool pool = new HTablePool(configuration, 10);
-        usersDao = new UsersDao(pool);
     }
 
     @Test
