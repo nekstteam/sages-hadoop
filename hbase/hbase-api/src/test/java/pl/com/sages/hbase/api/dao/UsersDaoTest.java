@@ -6,6 +6,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +20,7 @@ public class UsersDaoTest {
     public static final String FORENAME = "Jan";
     public static final String SURNAME = "Kowalski";
     public static final String PASSWORD = "k12l3iu12313;k";
+
     private UsersDao usersDao;
 
     @Before
@@ -56,6 +60,37 @@ public class UsersDaoTest {
         //then
         assertThat(users).isNotNull();
         assertThat(users.size()).isGreaterThan(3);
+    }
+
+    @Test
+    public void shouldInsertBulkData() throws Exception {
+        //given
+        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("users/users.csv");
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+        String line = "";
+        String delimeter = ";";
+
+        while ((line = br.readLine()) != null) {
+
+            String[] userData = line.split(delimeter);
+
+            User user = new User();
+            user.setForename(userData[0]);
+            user.setSurname(userData[1]);
+            user.setEmail(userData[2]);
+            user.setPassword(userData[3]);
+
+            usersDao.save(user);
+
+        }
+
+        br.close();
+
+        //when
+
+        //then
+
     }
 
 }
