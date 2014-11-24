@@ -1,30 +1,34 @@
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
-    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-             version="2.0">
+http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
 
-    <persistence-unit name="cassandra_pu">
-        <provider>com.impetus.kundera.KunderaPersistence</provider>
+    <!-- JPA tutorial "unit" -->
+    <persistence-unit name="Tutorial">
+
+        <class>org.datanucleus.samples.jpa.tutorial.Inventory</class>
+        <class>org.datanucleus.samples.jpa.tutorial.Product</class>
+        <class>org.datanucleus.samples.jpa.tutorial.Book</class>
+
+        <exclude-unlisted-classes/>
+
+        <!--<properties>-->
+        <!--<property name="javax.persistence.jdbc.url" value="hbase:"/>-->
+        <!--</properties>-->
+
         <properties>
-            <!--<property name="kundera.nodes" value="localhost"/>-->
-            <!--<property name="kundera.port" value="9160"/>-->
-            <!--<property name="kundera.keyspace" value="KunderaExamples"/>-->
-            <!--<property name="kundera.dialect" value="cassandra"/>-->
-            <!--<property name="kundera.client.lookup.class" value="com.impetus.client.cassandra.pelops.PelopsClientFactory" />-->
-            <!--<property name="kundera.cache.provider.class" value="com.impetus.kundera.cache.ehcache.EhCacheProvider"/>-->
-            <!--<property name="kundera.cache.config.resource" value="/ehcache-test.xml"/>-->
+            <property name="datanucleus.ConnectionURL" value="hbase"/>
+            <property name="datanucleus.ConnectionUserName" value=""/>
+            <property name="datanucleus.ConnectionPassword" value=""/>
 
-            <property name="kundera.nodes" value="localhost"/>
-            <property name="kundera.port" value="2181"/>
-            <property name="kundera.keyspace" value="KunderaExamples"/>
-            <property name="kundera.dialect" value="hbase"/>
-            <property name="kundera.client.lookup.class" value="com.impetus.client.hbase.HBaseClientFactory"/>
 
-            <property name="kundera.client.property" value="hbase-kundera.xml"/>
-
-            <property name="kundera.ddl.auto.prepare" value="create" />
-
+            <property name="datanucleus.autoCreateSchema" value="true"/>
+            <property name="datanucleus.validateTables" value="false"/>
+            <property name="datanucleus.Optimistic" value="false"/>
+            <property name="datanucleus.validateConstraints" value="false"/>
         </properties>
+
     </persistence-unit>
 
 </persistence>
