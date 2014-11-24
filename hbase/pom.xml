@@ -16,6 +16,7 @@
     <modules>
         <module>hbase-api</module>
         <module>hbase-mapred</module>
+        <module>hbase-jpa</module>
     </modules>
 
 </project>
