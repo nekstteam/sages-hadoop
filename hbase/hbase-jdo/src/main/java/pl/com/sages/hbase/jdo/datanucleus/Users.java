@@ -2,11 +2,11 @@ package pl.com.sages.hbase.jdo.datanucleus;
 
 import javax.jdo.annotations.*;
 
-//@PersistenceCapable(schema = "users", catalog = "users", table = "users")
-@PersistenceCapable(table = "test", catalog = "test", schema = "test")
+@PersistenceCapable(table = "test")
 @Extensions({
         @Extension(vendorName = "datanucleus", key = "hbase.columnFamily.meta.bloomFilter", value = "ROWKEY"),
-        @Extension(vendorName = "datanucleus", key = "hbase.columnFamily.meta.inMemory", value = "true")
+        @Extension(vendorName = "datanucleus", key = "hbase.columnFamily.meta.inMemory", value = "true"),
+        @Extension(vendorName = "datanucleus", key = "hbase.table.sanity.checks", value = "false"),
 })
 public class Users {
 

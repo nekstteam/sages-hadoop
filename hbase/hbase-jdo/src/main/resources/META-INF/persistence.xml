@@ -6,30 +6,17 @@
 
     <!-- JDO Sages "unit" -->
     <persistence-unit name="Sages">
-        
+
         <!--<class>pl.com.sages.hbase.jdo.datanucleus.Inventory</class>-->
         <!--<class>pl.com.sages.hbase.jdo.datanucleus.Product</class>-->
         <!--<class>pl.com.sages.hbase.jdo.datanucleus.Book</class>-->
         <class>pl.com.sages.hbase.jdo.datanucleus.Users</class>
 
         <exclude-unlisted-classes/>
-        
-        <properties>
-            
-            <property name="javax.jdo.PersistenceManagerFactoryClass"
-                      value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory"/>
-            <property name="javax.jdo.option.PersistenceUnitName" value="Sages"/>
-            
-            <!--<property name="javax.jdo.option.ConnectionURL" value="hbase:"/>-->
-            <property name="javax.jdo.option.ConnectionURL" value="hbase:localhost:2181"/>
-            <property name="hbase.zookeeper.quorum" value="127.0.0.1"/>
-            <property name="hbase.zookeeper.property.clientport" value="2181"/>
-            <property name="zookeeper.znode.parent" value="/hbase-unsecure"/>
 
-            <!--<property name="datanucleus.ConnectionURL" value="hbase"/>-->
-            <!--<property name="datanucleus.ConnectionUserName" value=""/>-->
-            <!--<property name="datanucleus.ConnectionPassword" value=""/>-->
-            <!--<property name="datanucleus.autoCreateSchema" value="true"/>-->
+        <properties>
+
+            <property name="javax.jdo.option.ConnectionURL" value="hbase:localhost:2181"/>
             <property name="datanucleus.autoCreateSchema" value="false"/>
             <property name="datanucleus.validateTables" value="false"/>
             <property name="datanucleus.Optimistic" value="false"/>
