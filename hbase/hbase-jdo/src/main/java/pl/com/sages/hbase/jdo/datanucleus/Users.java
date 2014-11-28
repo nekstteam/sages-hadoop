@@ -2,7 +2,7 @@ package pl.com.sages.hbase.jdo.datanucleus;
 
 import javax.jdo.annotations.*;
 
-@PersistenceCapable(table = "test")
+@PersistenceCapable(table = "users")
 @Extensions({
         @Extension(vendorName = "datanucleus", key = "hbase.columnFamily.meta.bloomFilter", value = "ROWKEY"),
         @Extension(vendorName = "datanucleus", key = "hbase.columnFamily.meta.inMemory", value = "true"),
@@ -10,19 +10,19 @@ import javax.jdo.annotations.*;
 })
 public class Users {
 
-    @PrimaryKey
+    @PrimaryKey(name = "info:id")
     private long id;
 
     // column family data, name of attribute blob 
-    @Column(name = "test:blob")
+    @Column(name = "info:blob")
     private String blob;
 
     // column family meta, name of attribute firstName 
-    @Column(name = "test:firstName")
+    @Column(name = "info:firstName")
     private String firstName;
 
     // column family meta, name of attribute firstName 
-    @Column(name = "test:lastName")
+    @Column(name = "info:lastName")
     private String lastName;
 
     public long getId() {
