@@ -7,6 +7,8 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
     <!-- JPA tutorial "unit" -->
     <persistence-unit name="Tutorial">
 
+        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+
         <class>org.datanucleus.samples.jpa.tutorial.Inventory</class>
         <class>org.datanucleus.samples.jpa.tutorial.Product</class>
         <class>org.datanucleus.samples.jpa.tutorial.Book</class>
