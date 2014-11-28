@@ -1,6 +1,9 @@
 package org.datanucleus.samples.jdo.tutorial;
 
 import org.junit.Test;
+import pl.com.sages.hbase.jdo.datanucleus.Inventory;
+import pl.com.sages.hbase.jdo.datanucleus.Product;
+import pl.com.sages.hbase.jdo.datanucleus.Users;
 
 import javax.jdo.*;
 
@@ -12,10 +15,10 @@ public class HbaseDatanucleusJdoTest {
 
         JDOEnhancer enhancer = JDOHelper.getEnhancer();
         enhancer.setVerbose(true);
-        enhancer.addPersistenceUnit("Tutorial");
+        enhancer.addPersistenceUnit("Sages");
         enhancer.enhance();
 
-        PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("Tutorial");
+        PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("Sages");
         PersistenceManager pm = pmf.getPersistenceManager();
 
         Transaction tx = pm.currentTransaction();

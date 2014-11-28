@@ -4,13 +4,13 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
 
-    <!-- JDO tutorial "unit" -->
-    <persistence-unit name="Tutorial">
+    <!-- JDO Sages "unit" -->
+    <persistence-unit name="Sages">
         
-        <!--<class>org.datanucleus.samples.jdo.tutorial.Inventory</class>-->
-        <!--<class>org.datanucleus.samples.jdo.tutorial.Product</class>-->
-        <!--<class>org.datanucleus.samples.jdo.tutorial.Book</class>-->
-        <class>org.datanucleus.samples.jdo.tutorial.Users</class>
+        <!--<class>pl.com.sages.hbase.jdo.datanucleus.Inventory</class>-->
+        <!--<class>pl.com.sages.hbase.jdo.datanucleus.Product</class>-->
+        <!--<class>pl.com.sages.hbase.jdo.datanucleus.Book</class>-->
+        <class>pl.com.sages.hbase.jdo.datanucleus.Users</class>
 
         <exclude-unlisted-classes/>
         
@@ -18,7 +18,7 @@
             
             <property name="javax.jdo.PersistenceManagerFactoryClass"
                       value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory"/>
-            <property name="javax.jdo.option.PersistenceUnitName" value="Tutorial"/>
+            <property name="javax.jdo.option.PersistenceUnitName" value="Sages"/>
             
             <!--<property name="javax.jdo.option.ConnectionURL" value="hbase:"/>-->
             <property name="javax.jdo.option.ConnectionURL" value="hbase:localhost:2181"/>

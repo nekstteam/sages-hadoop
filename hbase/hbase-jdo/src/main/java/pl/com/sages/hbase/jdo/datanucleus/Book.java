@@ -1,4 +1,4 @@
-package org.datanucleus.samples.jdo.tutorial;
+package pl.com.sages.hbase.jdo.datanucleus;
 
 
 import javax.jdo.annotations.PersistenceCapable;
