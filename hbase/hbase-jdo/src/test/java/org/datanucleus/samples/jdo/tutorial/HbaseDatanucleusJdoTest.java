@@ -2,16 +2,18 @@ package org.datanucleus.samples.jdo.tutorial;
 
 import org.junit.Test;
 
-import javax.jdo.JDOHelper;
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
-import javax.jdo.Transaction;
+import javax.jdo.*;
 
 public class HbaseDatanucleusJdoTest {
 
     @Test
     public void shouldSaveEntity() throws Exception {
         //given
+
+        JDOEnhancer enhancer = JDOHelper.getEnhancer();
+        enhancer.setVerbose(true);
+        enhancer.addPersistenceUnit("Tutorial");
+        enhancer.enhance();
 
         PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("Tutorial");
         PersistenceManager pm = pmf.getPersistenceManager();
@@ -24,7 +26,7 @@ public class HbaseDatanucleusJdoTest {
             user.setBlob("kwjeow");
             user.setFirstName("Jan");
             user.setLastName("Kowalski");
-            user.setId(124);
+            user.setId(System.currentTimeMillis());
 
             pm.makePersistent(user);
             tx.commit();
