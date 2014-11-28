@@ -19,6 +19,8 @@ public class HbaseDatanucleusJdoTest {
         PersistenceManager pm = pmf.getPersistenceManager();
 
         Transaction tx = pm.currentTransaction();
+
+        //when
         try {
             tx.begin();
 
@@ -37,10 +39,6 @@ public class HbaseDatanucleusJdoTest {
             }
             pm.close();
         }
-
-
-        //when
-
         //then
 
     }
