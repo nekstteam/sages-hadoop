@@ -15,10 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-/**
- * Created by radek on 11/30/14.
- */
-public class LoadMovieRatingData {
+public class LoadMovieRatingData extends AbstractLoader {
 
     public static final String TABLE_NAME = "ratings";
     public static final String FAMILY_NAME = "ratings";
