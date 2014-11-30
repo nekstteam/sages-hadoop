@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
+    <!-- JPA tutorial "unit" -->
+    <persistence-unit name="Tutorial">
+
+        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+
+        <class>org.datanucleus.samples.jpa.tutorial.Inventory</class>
+        <class>org.datanucleus.samples.jpa.tutorial.Product</class>
+        <class>org.datanucleus.samples.jpa.tutorial.Book</class>
+
+        <exclude-unlisted-classes/>
+
+        <properties>
+            <property name="datanucleus.ConnectionURL" value="hbase"/>
+            <property name="datanucleus.autoCreateSchema" value="false"/>
+            <property name="datanucleus.validateTables" value="false"/>
+            <property name="datanucleus.Optimistic" value="false"/>
+            <property name="datanucleus.validateConstraints" value="false"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

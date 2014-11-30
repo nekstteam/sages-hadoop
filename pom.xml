@@ -42,6 +42,16 @@
                 <artifactId>hbase-client</artifactId>
                 <version>${hbase.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase-common</artifactId>
+                <version>${hbase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase-server</artifactId>
+                <version>${hbase.version}</version>
+            </dependency>
 
             <!--Mahout-->
             <dependency>
@@ -61,12 +71,12 @@
 
     </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>apache release</id>
-            <url>https://repository.apache.org/content/repositories/releases/</url>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>apache release</id>-->
+            <!--<url>https://repository.apache.org/content/repositories/releases/</url>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
     <build>
         <plugins>

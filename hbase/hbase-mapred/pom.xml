@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hbase-api</artifactId>
+    <artifactId>hbase-mapred</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -14,6 +14,12 @@
     </parent>
 
     <dependencies>
+
+        <dependency>
+            <groupId>pl.com.sages</groupId>
+            <artifactId>hbase-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.hbase</groupId>
