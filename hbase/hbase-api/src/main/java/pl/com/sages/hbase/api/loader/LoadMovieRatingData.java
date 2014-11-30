@@ -18,10 +18,10 @@ import java.io.IOException;
 /**
  * Created by radek on 11/30/14.
  */
-public class LoadMovieData {
+public class LoadMovieRatingData {
 
-    public static final String TABLE_NAME = "movies";
-    public static final String FAMILY_NAME = "movies";
+    public static final String TABLE_NAME = "ratings";
+    public static final String FAMILY_NAME = "ratings";
 
     public static void main(String[] args) throws IOException {
 
@@ -44,25 +44,29 @@ public class LoadMovieData {
         admin.createTable(table);
 
         // wrzucanie danych do HBase
-        HTableInterface movies = new HTable(configuration, TABLE_NAME);
+        HTableInterface ratings = new HTable(configuration, TABLE_NAME);
 
-        BufferedReader br = new BufferedReader(new FileReader(new File("/home/radek/Sages/ml-10M100K/movies.dat")));
+        BufferedReader br = new BufferedReader(new FileReader(new File("/home/radek/Sages/ml-10M100K/ratings.dat")));
         String line = "";
         String delimeter = "::";
 
+        int id = 1;
         while ((line = br.readLine()) != null) {
 
             String[] movieData = line.split(delimeter);
-            String id = movieData[0];
-            String title = movieData[1];
-            String genres = movieData[2];
-            System.out.println(id + "::" + title + "::" + genres);
+            String userId = movieData[0];
+            String movieId = movieData[1];
+            String rating = movieData[2];
+//            String timestamp = movieData[3];
+            if (id % 1000 == 0) {
+                System.out.println(id + " -> " + userId + "::" + movieId + "::" + rating);
+            }
 
-            Put put = new Put(Bytes.toBytes(id));
-            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("title"), Bytes.toBytes(title));
-            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("genres"), Bytes.toBytes(genres));
+            Put put = new Put(Bytes.toBytes(id++));
+            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("movieId"), Bytes.toBytes(movieId));
+            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("rating"), Bytes.toBytes(rating));
 
-            movies.put(put);
+            ratings.put(put);
         }
 
         br.close();
