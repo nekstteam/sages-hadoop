@@ -16,7 +16,6 @@
     <modules>
         <module>hbase-api</module>
         <module>hbase-mapred</module>
-        <!--<module>hbase-jpa</module>-->
         <module>hbase-jdo</module>
         <module>hbase-jpa-kundera</module>
     </modules>
