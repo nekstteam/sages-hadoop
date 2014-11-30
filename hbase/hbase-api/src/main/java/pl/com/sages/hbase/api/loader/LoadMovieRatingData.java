@@ -56,7 +56,7 @@ public class LoadMovieRatingData {
             String[] movieData = line.split(delimeter);
             String userId = movieData[0];
             String movieId = movieData[1];
-            String rating = movieData[2];
+            Double rating = Double.parseDouble(movieData[2]);
 //            String timestamp = movieData[3];
             if (id % 1000 == 0) {
                 System.out.println(id + " -> " + userId + "::" + movieId + "::" + rating);
