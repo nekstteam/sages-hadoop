@@ -2,9 +2,6 @@ package pl.com.sages.hbase.api.loader;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.HColumnDescriptor;
-import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
@@ -17,36 +14,30 @@ import java.io.IOException;
 
 public class LoadMovieRatingData extends AbstractLoader {
 
+    public static final String RATING_DATA = "/home/radek/Sages/dane/ml-10M100K/ratings.dat";
+
     public static final String TABLE_NAME = "ratings";
     public static final String FAMILY_NAME = "ratings";
+    public static final String MOVIE_ID = "movieId";
+    public static final String RATING = "rating";
 
     public static void main(String[] args) throws IOException {
+        new LoadMovieRatingData().run();
+    }
 
+    public void run() throws IOException {
         Configuration configuration = HBaseConfiguration.create();
 
-        HBaseAdmin admin = new HBaseAdmin(configuration);
-
-        boolean exists = admin.tableExists(TABLE_NAME);
-        if (exists) {
-            admin.disableTable(TABLE_NAME);
-            admin.deleteTable(TABLE_NAME);
-        }
-
-        // tworzenie tabeli HBase
-        HTableDescriptor table = new HTableDescriptor(TABLE_NAME);
-        HColumnDescriptor columnFamily = new HColumnDescriptor(FAMILY_NAME);
-        columnFamily.setMaxVersions(1);
-        table.addFamily(columnFamily);
-
-        admin.createTable(table);
+        recreateTable(configuration, TABLE_NAME, FAMILY_NAME);
 
         // wrzucanie danych do HBase
         HTableInterface ratings = new HTable(configuration, TABLE_NAME);
 
-        BufferedReader br = new BufferedReader(new FileReader(new File("/home/radek/Sages/ml-10M100K/ratings.dat")));
+        BufferedReader br = new BufferedReader(new FileReader(new File(RATING_DATA)));
         String line = "";
         String delimeter = "::";
 
+        //UserID::MovieID::Rating::Timestamp
         int id = 1;
         while ((line = br.readLine()) != null) {
 
@@ -55,19 +46,24 @@ public class LoadMovieRatingData extends AbstractLoader {
             String movieId = movieData[1];
             Double rating = Double.parseDouble(movieData[2]);
 //            String timestamp = movieData[3];
+
+//            System.out.println(id + " -> " + userId + "::" + movieId + "::" + rating);
             if (id % 1000 == 0) {
-                System.out.println(id + " -> " + userId + "::" + movieId + "::" + rating);
+                System.out.println("Wczytano " + id + " wierszy");
+            }
+
+            if (id > 10000) {
+                break; // wczytujemy tylko pierwsze 10 tys wierszy
             }
 
             Put put = new Put(Bytes.toBytes(id++));
-            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("movieId"), Bytes.toBytes(movieId));
-            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("rating"), Bytes.toBytes(rating));
+            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(MOVIE_ID), Bytes.toBytes(movieId));
+            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(RATING), Bytes.toBytes(rating));
 
             ratings.put(put);
         }
 
         br.close();
-
     }
 
 }
