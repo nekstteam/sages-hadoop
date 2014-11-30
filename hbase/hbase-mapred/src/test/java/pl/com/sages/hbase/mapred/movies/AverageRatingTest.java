@@ -4,19 +4,18 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.junit.Before;
 import org.junit.Test;
-import pl.com.sages.hbase.mapred.users.count.CountUsersMapper;
+import pl.com.sages.hbase.api.model.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -74,7 +73,21 @@ public class AverageRatingTest {
 
         //then
         assertThat(succeeded).isTrue();
-//        assertThat(job.getCounters().findCounter(CountUsersMapper.Counters.USER_COUNT).getValue()).isGreaterThan(100);
+
+        HTableInterface ratingaverage = new HTable(configuration, TABLE_NAME);
+
+        scan = new Scan();
+        scan.addFamily(Bytes.toBytes(FAMILY_NAME));
+
+        ResultScanner results = ratingaverage.getScanner(scan);
+        ArrayList<User> list = new ArrayList<>();
+        for (Result result : results) {
+            byte[] id = result.getRow();
+            byte[] average = result.getValue(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("average"));
+            System.out.println(Bytes.toString(id) + " " + Bytes.toDouble(average));
+        }
+
+        ratingaverage.close();
     }
 
 }

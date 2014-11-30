@@ -16,15 +16,19 @@ public class MyTableReducer extends TableReducer<Text, DoubleWritable, Immutable
 
     public void reduce(Text key, Iterable<DoubleWritable> values, Context context) throws IOException, InterruptedException {
 
-        double i = 0;
+        double sum = 0;
+        int count = 0;
         for (DoubleWritable val : values) {
-            i += val.get();
+            sum += val.get();
+            count++;
         }
 
-        Put put = new Put(Bytes.toBytes(key.toString()));
-        put.add(CF, AVERAGE, Bytes.toBytes(i));
+        if (count > 0) {
+            Put put = new Put(Bytes.toBytes(key.toString()));
+            put.add(CF, AVERAGE, Bytes.toBytes(sum / count));
 
-        context.write(null, put);
+            context.write(null, put);
+        }
     }
 
 }
