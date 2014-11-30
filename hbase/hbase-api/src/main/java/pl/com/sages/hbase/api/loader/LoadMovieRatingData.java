@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class LoadMovieRatingData extends AbstractLoader {
+public class LoadMovieRatingData {
 
     public static final String RATING_DATA = "/home/radek/Sages/dane/ml-10M100K/ratings.dat";
 
@@ -28,7 +28,7 @@ public class LoadMovieRatingData extends AbstractLoader {
     public void run() throws IOException {
         Configuration configuration = HBaseConfiguration.create();
 
-        recreateTable(configuration, TABLE_NAME, FAMILY_NAME);
+        TableFactory.recreateTable(configuration, TABLE_NAME, FAMILY_NAME);
 
         // wrzucanie danych do HBase
         HTableInterface ratings = new HTable(configuration, TABLE_NAME);

@@ -7,9 +7,9 @@ import org.apache.hadoop.hbase.client.HBaseAdmin;
 
 import java.io.IOException;
 
-public abstract class AbstractLoader {
+public abstract class TableFactory {
 
-    protected void recreateTable(Configuration configuration, String tableName, String familyName) throws IOException {
+    public static void recreateTable(Configuration configuration, String tableName, String familyName) throws IOException {
         HBaseAdmin admin = new HBaseAdmin(configuration);
 
         boolean exists = admin.tableExists(tableName);

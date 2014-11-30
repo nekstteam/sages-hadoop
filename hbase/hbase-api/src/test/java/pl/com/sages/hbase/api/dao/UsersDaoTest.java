@@ -2,11 +2,14 @@ package pl.com.sages.hbase.api.dao;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.HTablePool;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Before;
 import org.junit.Test;
+import pl.com.sages.hbase.api.loader.TableFactory;
 import pl.com.sages.hbase.api.model.User;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -24,10 +27,12 @@ public class UsersDaoTest {
     private UsersDao usersDao;
 
     @Before
-    public void before() {
+    public void before() throws IOException {
         Configuration configuration = getConfiguration();
         HTablePool pool = new HTablePool(configuration, 10);
         usersDao = new UsersDao(pool);
+
+        TableFactory.recreateTable(configuration, Bytes.toString(UsersDao.TABLE_NAME), Bytes.toString(UsersDao.FAMILY_NAME));
     }
 
     @Test
@@ -50,16 +55,16 @@ public class UsersDaoTest {
     @Test
     public void shouldFindAllUser() throws Exception {
         //given
-        usersDao.save(FORENAME,SURNAME,"1",PASSWORD);
-        usersDao.save(FORENAME,SURNAME,"2",PASSWORD);
-        usersDao.save(FORENAME,SURNAME,"3",PASSWORD);
+        usersDao.save(FORENAME, SURNAME, "1", PASSWORD);
+        usersDao.save(FORENAME, SURNAME, "2", PASSWORD);
+        usersDao.save(FORENAME, SURNAME, "3", PASSWORD);
 
         //when
         List<User> users = usersDao.findAll();
 
         //then
         assertThat(users).isNotNull();
-        assertThat(users.size()).isGreaterThan(3);
+        assertThat(users.size()).isEqualTo(3);
     }
 
     @Test

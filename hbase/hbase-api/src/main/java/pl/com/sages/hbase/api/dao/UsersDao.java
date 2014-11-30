@@ -12,7 +12,7 @@ import java.util.List;
 public class UsersDao {
 
     public static final byte[] TABLE_NAME = Bytes.toBytes("users");
-    public static final byte[] FAMILY_NAME = Bytes.toBytes("info");
+    public static final byte[] FAMILY_NAME = Bytes.toBytes("users");
     public static final byte[] FORENAME_COL = Bytes.toBytes("forename");
     public static final byte[] SURNAME_COL = Bytes.toBytes("surname");
     public static final byte[] PASSWORD_COL = Bytes.toBytes("password");
