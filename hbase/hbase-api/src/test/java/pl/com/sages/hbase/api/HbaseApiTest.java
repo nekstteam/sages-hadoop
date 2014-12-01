@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static pl.com.sages.hbase.api.HbaseConfigurationFactory.getConfiguration;
+import static pl.com.sages.hbase.api.conf.HbaseConfigurationFactory.getConfiguration;
 
 public class HbaseApiTest {
 

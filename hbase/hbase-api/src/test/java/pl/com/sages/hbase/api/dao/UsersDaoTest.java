@@ -2,9 +2,9 @@ package pl.com.sages.hbase.api.dao;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.HTablePool;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import pl.com.sages.hbase.api.model.User;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.com.sages.hbase.api.HbaseConfigurationFactory.getConfiguration;
+import static pl.com.sages.hbase.api.conf.HbaseConfigurationFactory.getConfiguration;
 
 public class UsersDaoTest {
 

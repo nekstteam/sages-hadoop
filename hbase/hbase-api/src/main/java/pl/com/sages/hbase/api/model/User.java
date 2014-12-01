@@ -1,4 +1,4 @@
-package pl.com.sages.hbase.api.dao;
+package pl.com.sages.hbase.api.model;
 
 import org.apache.hadoop.hbase.util.Bytes;
 

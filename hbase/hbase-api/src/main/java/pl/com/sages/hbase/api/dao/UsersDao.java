@@ -3,7 +3,7 @@ package pl.com.sages.hbase.api.dao;
 
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.apache.log4j.Logger;
+import pl.com.sages.hbase.api.model.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
