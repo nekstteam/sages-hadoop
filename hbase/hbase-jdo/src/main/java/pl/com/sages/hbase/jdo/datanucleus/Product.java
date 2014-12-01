@@ -9,8 +9,7 @@ public class Product {
     public static final String PRODUCT = "product";
 
     @PrimaryKey
-//    @Persistent(valueStrategy = IdGeneratorStrategy.INCREMENT)
-            long id;
+    long id;
 
     String name = null;
     String description = null;
