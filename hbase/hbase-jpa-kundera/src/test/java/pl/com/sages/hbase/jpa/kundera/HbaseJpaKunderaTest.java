@@ -18,7 +18,7 @@ public class HbaseJpaKunderaTest {
         user.setLastName("Smith");
         user.setCity("London");
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("cassandra_pu");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sages");
         EntityManager em = emf.createEntityManager();
 
         //when

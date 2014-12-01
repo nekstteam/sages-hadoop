@@ -3,7 +3,7 @@
     http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
 
-    <persistence-unit name="cassandra_pu">
+    <persistence-unit name="sages">
         <provider>com.impetus.kundera.KunderaPersistence</provider>
         <properties>
 
