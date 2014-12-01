@@ -13,7 +13,9 @@ import pl.com.sages.hbase.jdo.datanucleus.User;
 
 import javax.jdo.*;
 import java.io.IOException;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static pl.com.sages.hbase.api.conf.HbaseConfigurationFactory.getConfiguration;
 
 public class HbaseDatanucleusJdoTest {
@@ -25,16 +27,16 @@ public class HbaseDatanucleusJdoTest {
         UserDataFactory.insertTestData();
         TableFactory.recreateTable(configuration, Inventory.INVETORY, Inventory.INVETORY);
         TableFactory.recreateTable(configuration, Product.PRODUCT, Product.PRODUCT);
-    }
-
-    @Test
-    public void shouldSaveEntity() throws Exception {
-        //given
 
         JDOEnhancer enhancer = JDOHelper.getEnhancer();
         enhancer.setVerbose(true);
         enhancer.addPersistenceUnit("Sages");
         enhancer.enhance();
+    }
+
+    @Test
+    public void shouldSaveEntity() throws Exception {
+        //given
 
         PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("Sages");
         PersistenceManager pm = pmf.getPersistenceManager();
@@ -65,12 +67,55 @@ public class HbaseDatanucleusJdoTest {
     }
 
     @Test
-    public void shouldSaveEntity2() throws Exception {
+    public void shouldGetUsers() throws Exception {
         //given
 
         PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("Sages");
         PersistenceManager pm = pmf.getPersistenceManager();
 
+        Transaction tx = pm.currentTransaction();
+        try {
+
+            tx.begin();
+
+            User user = new User();
+            user.setBlob("kwjeow");
+            user.setFirstName("Jan");
+            user.setLastName("Kowalski");
+            user.setId(System.currentTimeMillis());
+
+            pm.makePersistent(user);
+
+            user = new User();
+            user.setBlob("data");
+            user.setFirstName("Michał");
+            user.setLastName("Lewandowski");
+            user.setId(System.currentTimeMillis());
+
+            pm.makePersistent(user);
+
+            tx.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //when
+
+        Query q = pm.newQuery("SELECT FROM " + User.class.getName());
+        List<User> users = (List) q.execute();
+
+        //then
+        assertThat(users.size()).isGreaterThan(1);
+    }
+
+    @Test
+    public void shouldSaveEntityProduct() throws Exception {
+        //given
+
+        PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("Sages");
+        PersistenceManager pm = pmf.getPersistenceManager();
+
+        //when
         Transaction tx = pm.currentTransaction();
         try {
             tx.begin();
@@ -79,16 +124,16 @@ public class HbaseDatanucleusJdoTest {
             inv.getProducts().add(product);
             pm.makePersistent(inv);
             tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (tx.isActive()) {
                 tx.rollback();
             }
             pm.close();
         }
-        //when
-
 
         //then
-
     }
+
 }
