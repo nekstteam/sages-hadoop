@@ -25,6 +25,8 @@
     <modules>
         <module>hbase</module>
         <module>mahout</module>
+        <module>flume</module>
+        <!--<module>ipi-nekst-hadoop-utils</module>-->
     </modules>
 
     <dependencyManagement>

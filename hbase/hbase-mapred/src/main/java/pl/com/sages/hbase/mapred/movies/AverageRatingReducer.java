@@ -9,9 +9,6 @@ import org.apache.hadoop.io.Text;
 
 import java.io.IOException;
 
-/**
- * Created by radek on 11/30/14.
- */
 public class AverageRatingReducer extends TableReducer<Text, IntWritable, ImmutableBytesWritable> {
 
     public static final byte[] CF = "cf".getBytes();
