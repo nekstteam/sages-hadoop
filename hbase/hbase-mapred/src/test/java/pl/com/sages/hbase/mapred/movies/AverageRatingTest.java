@@ -2,8 +2,6 @@ package pl.com.sages.hbase.mapred.movies;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.HColumnDescriptor;
-import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -12,10 +10,10 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.junit.Before;
 import org.junit.Test;
-import pl.com.sages.hbase.api.model.User;
+import pl.com.sages.hbase.api.loader.LoadMovieRatingData;
+import pl.com.sages.hbase.api.loader.TableFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,21 +26,7 @@ public class AverageRatingTest {
 
     @Before
     public void before() throws IOException {
-        HBaseAdmin admin = new HBaseAdmin(configuration);
-
-        boolean exists = admin.tableExists(TABLE_NAME);
-        if (exists) {
-            admin.disableTable(TABLE_NAME);
-            admin.deleteTable(TABLE_NAME);
-        }
-
-        // tworzenie tabeli HBase
-        HTableDescriptor table = new HTableDescriptor(TABLE_NAME);
-        HColumnDescriptor columnFamily = new HColumnDescriptor(FAMILY_NAME);
-        columnFamily.setMaxVersions(1);
-        table.addFamily(columnFamily);
-
-        admin.createTable(table);
+        TableFactory.recreateTable(configuration, TABLE_NAME, FAMILY_NAME);
     }
 
     @Test
@@ -52,18 +36,19 @@ public class AverageRatingTest {
         job.setJarByClass(MyMapper.class);
 
         Scan scan = new Scan();
-        scan.addFamily(Bytes.toBytes("ratings"));
-//        scan.addColumn(, UsersDao.FORENAME_COL);
+        scan.setCaching(500);
+        scan.setCacheBlocks(false);
+        scan.addFamily(Bytes.toBytes(LoadMovieRatingData.FAMILY_NAME));
 
         TableMapReduceUtil.initTableMapperJob(
-                "ratings",
+                LoadMovieRatingData.TABLE_NAME,
                 scan,
                 MyMapper.class,
                 Text.class,
                 DoubleWritable.class,
                 job);
         TableMapReduceUtil.initTableReducerJob(
-                "ratingaverage",
+                TABLE_NAME,
                 MyTableReducer.class,
                 job);
 //        job.setNumReduceTasks(0);
@@ -79,15 +64,18 @@ public class AverageRatingTest {
         scan = new Scan();
         scan.addFamily(Bytes.toBytes(FAMILY_NAME));
 
+        int count = 0;
         ResultScanner results = ratingaverage.getScanner(scan);
-        ArrayList<User> list = new ArrayList<>();
         for (Result result : results) {
             byte[] id = result.getRow();
-            byte[] average = result.getValue(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("average"));
-            System.out.println(Bytes.toString(id) + " " + Bytes.toDouble(average));
+            byte[] average = result.getValue(Bytes.toBytes(FAMILY_NAME), MyTableReducer.AVERAGE);
+//            System.out.println(Bytes.toString(id) + " " + Bytes.toDouble(average));
+            count++;
         }
 
         ratingaverage.close();
+
+        assertThat(count).isGreaterThan(1000);
     }
 
 }

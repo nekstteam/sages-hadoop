@@ -11,6 +11,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 import org.junit.Test;
 import pl.com.sages.hbase.api.dao.UsersDao;
+import pl.com.sages.hbase.api.loader.TableFactory;
 import pl.com.sages.hbase.api.loader.UserDataFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,13 +21,17 @@ public class CountUsersTest {
     @Test
     public void shouldRunMapReduce() throws Exception {
         //given
+        Configuration configuration = HBaseConfiguration.create();
+
+        TableFactory.recreateTable(configuration, Bytes.toString(UsersDao.TABLE_NAME), Bytes.toString(UsersDao.FAMILY_NAME));
         UserDataFactory.insertTestData();
 
-        Configuration configuration = HBaseConfiguration.create();
         Job job = new Job(configuration, "Count Users");
         job.setJarByClass(CountUsersMapper.class);
 
         Scan scan = new Scan();
+        scan.setCaching(500);        // 1 is the default in Scan, which will be bad for MapReduce jobs
+        scan.setCacheBlocks(false); // don't set to true for MR jobs
         scan.addColumn(UsersDao.FAMILY_NAME, UsersDao.FORENAME_COL);
 
         TableMapReduceUtil.initTableMapperJob(
