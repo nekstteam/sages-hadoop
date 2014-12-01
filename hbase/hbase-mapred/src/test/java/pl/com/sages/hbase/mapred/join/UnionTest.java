@@ -70,9 +70,7 @@ public class UnionTest {
                 null,
                 null,
                 job);
-//        job.setReducerClass(RatingExportReducer.class);
-//        job.setNumReduceTasks(0);
-//        FileOutputFormat.setOutputPath(job, new Path("/tmp/mr/mySummaryFile_union_" + System.currentTimeMillis()));
+//        FileOutputFormat.setOutputPath(job, new Path("/tmp/sages/movies_with_ratings_" + System.currentTimeMillis()));
         TableMapReduceUtil.initTableReducerJob(
                 TABLE_NAME,
                 null,
