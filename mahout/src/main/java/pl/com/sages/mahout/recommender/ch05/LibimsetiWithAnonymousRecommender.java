@@ -2,7 +2,7 @@
  * Source code for listing 5.6
  * 
  */
-package mia.recommender.ch05;
+package pl.com.sages.mahout.recommender.ch05;
 
 import java.io.IOException;
 import java.util.List;

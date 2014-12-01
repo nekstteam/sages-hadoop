@@ -1,4 +1,4 @@
-package mia.recommender.ch06;
+package pl.com.sages.mahout.recommender.ch06;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -2,7 +2,7 @@
  * Source Code for Listing 10.6
  * 
  */
-package mia.clustering.ch10;
+package pl.com.sages.mahout.clustering.ch10;
 
 import java.util.Collection;
 import java.util.Collections;

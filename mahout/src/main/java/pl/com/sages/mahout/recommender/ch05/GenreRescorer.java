@@ -2,7 +2,7 @@
  * Source code for listing 5.3
  * 
  */
-package mia.recommender.ch05;
+package pl.com.sages.mahout.recommender.ch05;
 
 import org.apache.mahout.cf.taste.recommender.IDRescorer;
 

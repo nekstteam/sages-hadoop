@@ -1,6 +1,6 @@
-package mia.clustering.ch12;
+package pl.com.sages.mahout.clustering.ch12;
 
-import mia.clustering.ch12.lastfm.VectorCreationJob;
+import pl.com.sages.mahout.clustering.ch12.lastfm.VectorCreationJob;
 
 import org.apache.hadoop.fs.Path;
 

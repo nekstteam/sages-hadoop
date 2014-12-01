@@ -1,4 +1,4 @@
-package mia.recommender.ch02;
+package pl.com.sages.mahout.recommender.ch02;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
@@ -23,7 +23,17 @@ class EvaluatorIntro {
 
   public static void main(String[] args) throws Exception {
     RandomUtils.useTestSeed();
-    DataModel model = new FileDataModel(new File("intro.csv"));
+
+	File modelFile = null;
+	if (args.length > 0)
+		modelFile = new File(args[0]);
+	if(modelFile == null || !modelFile.exists())
+		modelFile = new File("intro.csv");
+	if(!modelFile.exists()) {
+		System.err.println("Please, specify name of file, or put file 'input.csv' into current directory!");
+		System.exit(1);
+	}
+    DataModel model = new FileDataModel(modelFile);
 
     RecommenderEvaluator evaluator =
       new AverageAbsoluteDifferenceRecommenderEvaluator();

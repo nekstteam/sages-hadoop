@@ -2,7 +2,7 @@
  * Source code for listing 5.5
  * 
  */
-package mia.recommender.ch05;
+package pl.com.sages.mahout.recommender.ch05;
 
 import com.google.common.io.Files;
 import com.google.common.io.InputSupplier;

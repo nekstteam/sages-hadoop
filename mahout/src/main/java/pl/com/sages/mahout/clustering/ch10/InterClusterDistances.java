@@ -1,4 +1,4 @@
-package mia.clustering.ch10;
+package pl.com.sages.mahout.clustering.ch10;
 
 import java.util.ArrayList;
 import java.util.List;

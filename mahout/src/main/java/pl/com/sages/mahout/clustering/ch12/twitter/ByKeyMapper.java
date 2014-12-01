@@ -2,7 +2,7 @@
  * Source code for Listing 12.2
  * 
  */
-package mia.clustering.ch12.twitter;
+package pl.com.sages.mahout.clustering.ch12.twitter;
 
 import java.io.IOException;
 import java.util.Map;

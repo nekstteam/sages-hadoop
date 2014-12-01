@@ -2,9 +2,10 @@
  * Source Code for Listing 10.5
  * 
  */
-package mia.clustering.ch10;
+package pl.com.sages.mahout.clustering.ch10;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -15,6 +16,7 @@ import org.apache.mahout.clustering.Cluster;
 import org.apache.mahout.clustering.kmeans.KMeansDriver;
 import org.apache.mahout.clustering.kmeans.RandomSeedGenerator;
 import org.apache.mahout.common.HadoopUtil;
+import org.apache.mahout.common.Pair;
 import org.apache.mahout.common.distance.CosineDistanceMeasure;
 import org.apache.mahout.vectorizer.DictionaryVectorizer;
 import org.apache.mahout.vectorizer.DocumentProcessor;
@@ -35,7 +37,6 @@ public class NewsKMeansClustering {
     boolean sequentialAccessOutput = true;
     
     String inputDir = "reuters-seqfiles";
-    File inputDirFile = new File(inputDir);
     Configuration conf = new Configuration();
     FileSystem fs = FileSystem.get(conf);
 
@@ -48,11 +49,15 @@ public class NewsKMeansClustering {
         .getClass().asSubclass(Analyzer.class), tokenizedPath, conf);
 
     DictionaryVectorizer.createTermFrequencyVectors(tokenizedPath,
-      new Path(outputDir), conf, minSupport, maxNGramSize, minLLRValue, 2, true, reduceTasks,
+      new Path(outputDir), DictionaryVectorizer.DOCUMENT_VECTOR_OUTPUT_FOLDER,
+      conf, minSupport, maxNGramSize, minLLRValue, 2, true, reduceTasks,
       chunkSize, sequentialAccessOutput, false);
+    Pair<Long[], List<Path>> dfData = TFIDFConverter.calculateDF(
+    		new Path(outputDir, DictionaryVectorizer.DOCUMENT_VECTOR_OUTPUT_FOLDER),
+    	    new Path(outputDir), conf, chunkSize);   
     TFIDFConverter.processTfIdf(
       new Path(outputDir , DictionaryVectorizer.DOCUMENT_VECTOR_OUTPUT_FOLDER),
-      new Path(outputDir), conf, chunkSize, minDf,
+      new Path(outputDir), conf, dfData, minDf,
       maxDFPercent, norm, true, sequentialAccessOutput, false, reduceTasks);
     Path vectorsFolder = new Path(outputDir, "tfidf-vectors");
     Path centroids = new Path(outputDir, "centroids");
@@ -61,10 +66,12 @@ public class NewsKMeansClustering {
     RandomSeedGenerator.buildRandom(conf, vectorsFolder, centroids, 20,
       new CosineDistanceMeasure());
     KMeansDriver.run(conf, vectorsFolder, centroids, clusterOutput,
-      new CosineDistanceMeasure(), 0.01, 20, true, false);
+      0.01, 20, true, 0, false);
     
     SequenceFile.Reader reader = new SequenceFile.Reader(fs,
         new Path(clusterOutput, Cluster.CLUSTERED_POINTS_DIR
                                 + "/part-m-00000"), conf);
+    analyzer.close();
+    reader.close();
   }
 }

@@ -1,6 +1,6 @@
-package mia.clustering.ch12;
+package pl.com.sages.mahout.clustering.ch12;
 
-import mia.clustering.ch12.twitter.ByKeyGroupingJob;
+import pl.com.sages.mahout.clustering.ch12.twitter.ByKeyGroupingJob;
 
 import org.apache.commons.codec.language.DoubleMetaphone;
 import org.apache.mahout.common.Parameters;

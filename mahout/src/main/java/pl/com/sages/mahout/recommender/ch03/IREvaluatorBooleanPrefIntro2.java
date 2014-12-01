@@ -1,4 +1,4 @@
-package mia.recommender.ch03;
+package pl.com.sages.mahout.recommender.ch03;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.DataModelBuilder;

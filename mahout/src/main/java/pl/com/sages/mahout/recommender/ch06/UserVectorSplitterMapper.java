@@ -3,7 +3,7 @@
  * 
  * This is simplified version of org.apache.mahout.cf.taste.hadoop.item.UserVectorSplitterMapper class
  */
-package mia.recommender.ch06;
+package pl.com.sages.mahout.recommender.ch06;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -23,7 +23,7 @@ public class UserVectorSplitterMapper
 			throws IOException, InterruptedException {
 		long userID = key.get();
 		Vector userVector = value.get();
-		Iterator<Vector.Element> it = userVector.iterateNonZero();
+		Iterator<Vector.Element> it = userVector.nonZeroes().iterator();
 		IntWritable itemIndexWritable = new IntWritable();
 		while (it.hasNext()) {
 			Vector.Element e = it.next();

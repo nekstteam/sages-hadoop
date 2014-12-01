@@ -1,4 +1,4 @@
-package mia.clustering.ch12.twitter;
+package pl.com.sages.mahout.clustering.ch12.twitter;
 
 import java.io.IOException;
 

@@ -3,7 +3,9 @@
  * 
  */
 
-package mia.clustering.ch09;
+package pl.com.sages.mahout.clustering.ch09;
+
+import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -12,10 +14,11 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.SequenceFile;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.mahout.clustering.Cluster;
-import org.apache.mahout.clustering.WeightedVectorWritable;
+import org.apache.mahout.clustering.classify.WeightedVectorWritable;
 import org.apache.mahout.clustering.canopy.CanopyDriver;
 import org.apache.mahout.clustering.kmeans.KMeansDriver;
 import org.apache.mahout.common.HadoopUtil;
+import org.apache.mahout.common.Pair;
 import org.apache.mahout.common.distance.EuclideanDistanceMeasure;
 import org.apache.mahout.common.distance.TanimotoDistanceMeasure;
 import org.apache.mahout.vectorizer.DictionaryVectorizer;
@@ -40,11 +43,6 @@ public class NewsKMeansClustering {
    
     Configuration conf = new Configuration();
     FileSystem fs = FileSystem.get(conf);
-    /*
-     * SequenceFile.Writer writer = new SequenceFile.Writer(fs, conf, new Path(inputDir, "documents.seq"),
-     * Text.class, Text.class); for (Document d : Database) { writer.append(new Text(d.getID()), new
-     * Text(d.contents())); } writer.close();
-     */
 
     String outputDir = "newsClusters";
     HadoopUtil.delete(conf, new Path(outputDir));
@@ -55,21 +53,24 @@ public class NewsKMeansClustering {
         .asSubclass(Analyzer.class), tokenizedPath, conf);
     
     DictionaryVectorizer.createTermFrequencyVectors(tokenizedPath,
-      new Path(outputDir), conf, minSupport, maxNGramSize, minLLRValue, 2, true, reduceTasks,
+      new Path(outputDir), DictionaryVectorizer.DOCUMENT_VECTOR_OUTPUT_FOLDER, 
+      conf, minSupport, maxNGramSize, minLLRValue, 2, true, reduceTasks,
       chunkSize, sequentialAccessOutput, false);
+    Pair<Long[], List<Path>> dfData = TFIDFConverter.calculateDF(
+    		new Path(outputDir, DictionaryVectorizer.DOCUMENT_VECTOR_OUTPUT_FOLDER),
+    	    new Path(outputDir), conf, chunkSize);   
     TFIDFConverter.processTfIdf(
       new Path(outputDir , DictionaryVectorizer.DOCUMENT_VECTOR_OUTPUT_FOLDER),
-      new Path(outputDir), conf, chunkSize, minDf,
+      new Path(outputDir), conf, dfData, minDf,
       maxDFPercent, norm, true, sequentialAccessOutput, false, reduceTasks);
     Path vectorsFolder = new Path(outputDir, "tfidf-vectors");
     Path canopyCentroids = new Path(outputDir , "canopy-centroids");
     Path clusterOutput = new Path(outputDir , "clusters");
     
     CanopyDriver.run(vectorsFolder, canopyCentroids,
-      new EuclideanDistanceMeasure(), 250, 120, false, false);
-    KMeansDriver.run(conf, vectorsFolder, new Path(canopyCentroids, "clusters-0"),
-      clusterOutput, new TanimotoDistanceMeasure(), 0.01,
-      20, true, false);
+      new EuclideanDistanceMeasure(), 250, 120, false, 0.0, false);
+    KMeansDriver.run(conf, vectorsFolder, new Path(canopyCentroids, "clusters-0-final"),
+      clusterOutput, 0.01, 20, true, 0.0, false);
     
     SequenceFile.Reader reader = new SequenceFile.Reader(fs,
         new Path(clusterOutput + Cluster.CLUSTERED_POINTS_DIR + "/part-00000"), conf);
@@ -81,5 +82,6 @@ public class NewsKMeansClustering {
        + value.toString());
     }
     reader.close();
+    analyzer.close();
   }
 }

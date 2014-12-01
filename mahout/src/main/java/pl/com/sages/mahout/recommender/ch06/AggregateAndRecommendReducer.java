@@ -4,7 +4,7 @@
  * This is simplified version of org.apache.mahout.cf.taste.hadoop.item.AggregateAndRecommendReducer class
  * 
  */
-package mia.recommender.ch06;
+package pl.com.sages.mahout.recommender.ch06;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class AggregateAndRecommendReducer
 		Configuration jobConf = context.getConfiguration();
 		recommendationsPerUser = jobConf.getInt(NUM_RECOMMENDATIONS,
 				DEFAULT_NUM_RECOMMENDATIONS);
-		indexItemIDMap = TasteHadoopUtils.readItemIDIndexMap(
+		indexItemIDMap = TasteHadoopUtils.readIDIndexMap(
 				jobConf.get(ITEMID_INDEX_PATH), jobConf);
 	}
 
@@ -59,7 +59,7 @@ public class AggregateAndRecommendReducer
 						.getInstance()));
 
 		Iterator<Vector.Element> recommendationVectorIterator = recommendationVector
-				.iterateNonZero();
+				.nonZeroes().iterator();
 		while (recommendationVectorIterator.hasNext()) {
 			Vector.Element element = recommendationVectorIterator.next();
 			int index = element.index();

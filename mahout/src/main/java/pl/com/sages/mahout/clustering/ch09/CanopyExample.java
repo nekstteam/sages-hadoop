@@ -2,7 +2,7 @@
  * Source code for Listing 9.3
  * 
  */
-package mia.clustering.ch09;
+package pl.com.sages.mahout.clustering.ch09;
 
 import java.util.ArrayList;
 import java.util.List;

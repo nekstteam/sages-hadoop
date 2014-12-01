@@ -3,7 +3,7 @@
  * 
  * This is simplified version of org.apache.mahout.cf.taste.hadoop.item.PartialMultiplyMapper class
  */
-package mia.recommender.ch06;
+package pl.com.sages.mahout.recommender.ch06;
 
 import java.io.IOException;
 import java.util.List;
