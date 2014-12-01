@@ -1,10 +1,10 @@
 package pl.com.sages.flume;
 
-public class MyApp {
+public class FlumeSender {
 
     public static void main(String[] args) {
 
-        MyRpcClientFacade client = new MyRpcClientFacade();
+        FlumeRpcClientFacade client = new FlumeRpcClientFacade();
         client.init("localhost", 41414);
 
         String sampleData = "Hello Flume!";

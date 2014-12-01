@@ -8,7 +8,7 @@ import org.apache.flume.event.EventBuilder;
 
 import java.nio.charset.Charset;
 
-class MyRpcClientFacade {
+class FlumeRpcClientFacade {
 
     private RpcClient client;
     private String hostname;
