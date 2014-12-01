@@ -93,4 +93,37 @@ public class HbaseJpaKunderaTest {
         assertThat(results.size()).isGreaterThan(1);
     }
 
+    @Test
+    public void shouldSaveEntityWithAccount() throws Exception {
+        //given
+
+        User user = new User();
+        user.setUserId("0005");
+        user.setFirstName("Jan");
+        user.setLastName("Kowalski");
+        user.setCity("London");
+
+        Account account = new Account();
+        account.setAccountId(123L);
+        account.setName("My account");
+        account.setValid(true);
+
+        user.setAccount(account);
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sages");
+        EntityManager em = emf.createEntityManager();
+
+        //when
+        em.persist(user);
+        User findedUser = em.find(User.class, "0005");
+        em.close();
+        emf.close();
+
+        //then
+        assertThat(findedUser).isNotNull();
+        assertThat(findedUser.getFirstName()).isEqualTo("Jan");
+        assertThat(findedUser.getLastName()).isEqualTo("Kowalski");
+        assertThat(findedUser.getAccount().getName()).isEqualTo("My account");
+    }
+
 }

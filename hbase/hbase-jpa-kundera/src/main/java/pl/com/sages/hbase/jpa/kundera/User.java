@@ -1,9 +1,6 @@
 package pl.com.sages.hbase.jpa.kundera;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users", schema = "jpa_users@sages")
@@ -20,6 +17,9 @@ public class User {
 
     @Column(name = "city")
     private String city;
+
+    @OneToOne
+    private Account account;
 
     public User() {
     }
@@ -54,6 +54,14 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
 }
