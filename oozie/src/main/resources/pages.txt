@@ -1,0 +1,5 @@
+onet.pl	wp.pl,pudelek.pl,orange.pl,disk.com,dropbox.com
+wp.pl	orange.pl,onet.pl,zdrowie.com,ufo.com
+pudelek.pl	krakow.pl,motyle.com
+kwejk.pl	demotywatory.pl,onet.pl,wp.pl
+pc-computer.pl	onet.pl,motyle.com

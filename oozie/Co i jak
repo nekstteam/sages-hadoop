@@ -1,0 +1,73 @@
+OK.
+
+Zadaniem jest z pliku np:
+==============================
+onet.pl	wp.pl,pudelek.pl,orange.pl,disk.com,dropbox.com
+wp.pl	orange.pl,onet.pl,zdrowie.com,ufo.com
+pudelek.pl	krakow.pl,motyle.com
+==============================
+
+otrzymać coś na styl grafu (co na co wskazuje)... czyli krok przed pagerankiem:
+==============================
+1	disk.com -> onet.pl,
+1	dropbox.com -> onet.pl,
+1	krakow.pl -> pudelek.pl,
+1	motyle.com -> pudelek.pl,
+1	onet.pl -> wp.pl,
+2	orange.pl -> wp.pl,onet.pl,
+1	pudelek.pl -> onet.pl,
+1	ufo.com -> wp.pl,
+1	wp.pl -> onet.pl,
+1	zdrowie.com -> wp.pl,
+==============================
+
+Mapper i Reducer jak w przykładzie. Jest to użycie tzw. starego API, które do dzis jest używane.
+
+Jeśli chce się nowego to:
+	    <property>
+          <name>mapred.mapper.new-api</name>
+          <value>true</value>
+        </property>
+        <property>
+          <name>mapred.reducer.new-api</name>
+          <value>true</value>
+        </property>
+        
+wtedy mamy inne klasy wejściowe, jak również context.
+
+Jeśli w ooziem nie podano co jest na wejściu to znaczy że jest to TextInputFormat   -> <int,text>  gdzie "text" to kolejne linie a "int" to ilość znaków od początku pliku danej linijki.
+U mnie wywalało się między maperem a reduktorem bo tam też domyślnie jest <int,text> a mi potrzeba było <text,text>. Po tej poprawce zadziałało.
+
+
+========================================
+Jak odpalić?
+Wysyłasz sobie 3 pliki na hortona:
+-jar'a (dla wygody wrzuciłem go już do resources)
+-workflow.xml
+-job.properties
+
+dla wygody umieść sobie wszystko na localhost w katalogu:
+cd /usr/share/doc/oozie-4.0.0.2.1.1.0/       tam jest:   examples/apps/
+do apps wrzucasz pusty katalog "pagerank"
+do niego workflow.xml i job.properties
+następwnie w nim katalog "lib" i do niego .jar
+
+a następnie jako użytkownik "oozie"  (su oozie)
+cd /usr/share/doc/oozie-4.0.0.2.1.1.0/
+hadoop fs -rmr examples/apps/pagerank   (usuwanie gdyby tam już coś było)
+hadoop fs -copyFromLocal examples/apps/pagerank examples/apps/pagerank
+
+plik: pages.txt też jako użytkownik oozie umieszczasz w katalogu na hdfs:
+/user/oozie/examples/input-data/text2/pages.txt
+
+możliwe że bedziesz potrzebował polecenia hadoop fs -mkdir examples/input-data/text2
+
+Uruchamiamy:
+oozie job -oozie http://localhost:11000/oozie -config examples/apps/pagerank/job.properties -run
+
+Oglądamy:
+http://localhost:11000/oozie/
+
+
+
+
