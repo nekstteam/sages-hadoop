@@ -9,7 +9,7 @@
 
             <property name="kundera.nodes" value="localhost"/>
             <property name="kundera.port" value="2181"/>
-            <property name="kundera.keyspace" value="KunderaExamples"/>
+            <property name="kundera.keyspace" value="jpa_users"/>
             <property name="kundera.dialect" value="hbase"/>
             <property name="kundera.client.lookup.class" value="com.impetus.client.hbase.HBaseClientFactory"/>
 
