@@ -12,6 +12,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.junit.Before;
 import pl.com.sages.hbase.mapred.file.RatingExportReducer;
+import pl.com.sages.hbase.mapred.filter.FilterMapper;
 import pl.com.sages.hbase.mapred.movies.AverageRatingMapper;
 
 import java.io.IOException;
@@ -47,12 +48,12 @@ public class UnionTest {
         scans.add(scan2);
 
         TableMapReduceUtil.initTableMapperJob(scans,
-                UnionMapper.class,
-                Text.class,
-                DoubleWritable.class,
+                FilterMapper.class,
+                null,
+                null,
                 job);
-        job.setReducerClass(RatingExportReducer.class);
-        job.setNumReduceTasks(1);
+//        job.setReducerClass(RatingExportReducer.class);
+        job.setNumReduceTasks(0);
         FileOutputFormat.setOutputPath(job, new Path("/tmp/mr/mySummaryFile_union_" + System.currentTimeMillis()));
 
         //when
