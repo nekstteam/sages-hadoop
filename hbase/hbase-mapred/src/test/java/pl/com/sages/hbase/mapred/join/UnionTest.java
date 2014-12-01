@@ -53,8 +53,13 @@ public class UnionTest {
                 null,
                 job);
 //        job.setReducerClass(RatingExportReducer.class);
+//        job.setNumReduceTasks(0);
+//        FileOutputFormat.setOutputPath(job, new Path("/tmp/mr/mySummaryFile_union_" + System.currentTimeMillis()));
+        TableMapReduceUtil.initTableReducerJob(
+                "join_movies",
+                null,
+                job);
         job.setNumReduceTasks(0);
-        FileOutputFormat.setOutputPath(job, new Path("/tmp/mr/mySummaryFile_union_" + System.currentTimeMillis()));
 
         //when
         boolean succeeded = job.waitForCompletion(true);
