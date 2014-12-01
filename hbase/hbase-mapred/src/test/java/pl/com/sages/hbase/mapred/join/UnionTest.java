@@ -1,17 +1,18 @@
 package pl.com.sages.hbase.mapred.join;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HTableDescriptor;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.junit.Before;
-import pl.com.sages.hbase.mapred.file.RatingExportReducer;
+import org.junit.Test;
+import pl.com.sages.hbase.api.loader.LoadMovieData;
+import pl.com.sages.hbase.api.loader.LoadMovieRatingData;
 import pl.com.sages.hbase.mapred.filter.FilterMapper;
 import pl.com.sages.hbase.mapred.movies.AverageRatingMapper;
 
@@ -23,28 +24,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class UnionTest {
 
+    public static final String TABLE_NAME = "movies_with_rating";
+    public static final String FAMILY_NAME = "movies_with_rating";
+
     private Configuration configuration = HBaseConfiguration.create();
 
     @Before
     public void before() throws IOException {
-//        TableFactory.recreateTable(configuration, TABLE_NAME, FAMILY_NAME);
+        HBaseAdmin admin = new HBaseAdmin(configuration);
+
+        boolean exists = admin.tableExists(TABLE_NAME);
+        if (exists) {
+            admin.disableTable(TABLE_NAME);
+            admin.deleteTable(TABLE_NAME);
+        }
+
+        // tworzenie tabeli HBase
+        HTableDescriptor table = new HTableDescriptor(TABLE_NAME);
+        table.addFamily(new HColumnDescriptor(FAMILY_NAME));
+        table.addFamily(new HColumnDescriptor(LoadMovieData.FAMILY_NAME));
+        table.addFamily(new HColumnDescriptor(LoadMovieRatingData.FAMILY_NAME));
+
+        admin.createTable(table);
     }
 
-    @org.junit.Test
+    @Test
     public void shouldJoinTables() throws Exception {
         //given
 
         Job job = new Job(configuration, "Joins");
         job.setJarByClass(AverageRatingMapper.class);
 
-        List scans = new ArrayList();
+        List<Scan> scans = new ArrayList<>();
 
         Scan scan1 = new Scan();
-        scan1.setAttribute(Scan.SCAN_ATTRIBUTES_TABLE_NAME, Bytes.toBytes("movies"));
+        scan1.setAttribute(Scan.SCAN_ATTRIBUTES_TABLE_NAME, Bytes.toBytes(LoadMovieData.TABLE_NAME));
         scans.add(scan1);
 
         Scan scan2 = new Scan();
-        scan2.setAttribute(Scan.SCAN_ATTRIBUTES_TABLE_NAME, Bytes.toBytes("ratings"));
+        scan2.setAttribute(Scan.SCAN_ATTRIBUTES_TABLE_NAME, Bytes.toBytes(LoadMovieRatingData.TABLE_NAME));
         scans.add(scan2);
 
         TableMapReduceUtil.initTableMapperJob(scans,
@@ -56,7 +74,7 @@ public class UnionTest {
 //        job.setNumReduceTasks(0);
 //        FileOutputFormat.setOutputPath(job, new Path("/tmp/mr/mySummaryFile_union_" + System.currentTimeMillis()));
         TableMapReduceUtil.initTableReducerJob(
-                "join_movies",
+                TABLE_NAME,
                 null,
                 job);
         job.setNumReduceTasks(0);
