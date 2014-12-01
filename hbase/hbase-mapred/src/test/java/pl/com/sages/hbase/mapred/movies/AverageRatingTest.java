@@ -33,7 +33,7 @@ public class AverageRatingTest {
     public void shouldRunMapReduce() throws Exception {
         //given
         Job job = new Job(configuration, "Average Rating");
-        job.setJarByClass(MyMapper.class);
+        job.setJarByClass(AverageRatingMapper.class);
 
         Scan scan = new Scan();
         scan.setCaching(500);
@@ -43,13 +43,13 @@ public class AverageRatingTest {
         TableMapReduceUtil.initTableMapperJob(
                 LoadMovieRatingData.TABLE_NAME,
                 scan,
-                MyMapper.class,
+                AverageRatingMapper.class,
                 Text.class,
                 DoubleWritable.class,
                 job);
         TableMapReduceUtil.initTableReducerJob(
                 TABLE_NAME,
-                MyTableReducer.class,
+                AverageRatingReducer.class,
                 job);
 //        job.setNumReduceTasks(0);
 
@@ -68,7 +68,7 @@ public class AverageRatingTest {
         ResultScanner results = ratingaverage.getScanner(scan);
         for (Result result : results) {
             byte[] id = result.getRow();
-            byte[] average = result.getValue(Bytes.toBytes(FAMILY_NAME), MyTableReducer.AVERAGE);
+            byte[] average = result.getValue(Bytes.toBytes(FAMILY_NAME), AverageRatingReducer.AVERAGE);
 //            System.out.println(Bytes.toString(id) + " " + Bytes.toDouble(average));
             count++;
         }
