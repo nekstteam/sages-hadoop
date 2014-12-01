@@ -6,13 +6,15 @@ import javax.jdo.annotations.PrimaryKey;
 import java.util.HashSet;
 import java.util.Set;
 
-@PersistenceCapable
+@PersistenceCapable(table = Inventory.INVETORY, schema = Inventory.INVETORY, catalog = Inventory.INVETORY)
 public class Inventory {
+
+    public static final String INVETORY = "inventory";
 
     @PrimaryKey
     String name = null;
 
-    Set<Product> products = new HashSet();
+    Set<Product> products = new HashSet<Product>();
 
     public Inventory(String name) {
         this.name = name;

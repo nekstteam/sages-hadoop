@@ -1,16 +1,16 @@
 package pl.com.sages.hbase.jdo.datanucleus;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable
+@PersistenceCapable(table = Product.PRODUCT, schema = Product.PRODUCT, catalog = Product.PRODUCT)
 public class Product {
 
+    public static final String PRODUCT = "product";
+
     @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.INCREMENT)
-    long id;
+//    @Persistent(valueStrategy = IdGeneratorStrategy.INCREMENT)
+            long id;
 
     String name = null;
     String description = null;
