@@ -5,6 +5,8 @@ import org.junit.Test;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,7 +39,7 @@ public class HbaseJpaKunderaTest {
         //given
 
         User user = new User();
-        user.setUserId("0003");
+        user.setUserId("0002");
         user.setFirstName("Jan");
         user.setLastName("Kowalski");
         user.setCity("London");
@@ -47,7 +49,7 @@ public class HbaseJpaKunderaTest {
 
         //when
         em.persist(user);
-        User findedUser = em.find(User.class, "0003");
+        User findedUser = em.find(User.class, "0002");
         em.close();
         emf.close();
 
@@ -55,6 +57,40 @@ public class HbaseJpaKunderaTest {
         assertThat(findedUser).isNotNull();
         assertThat(findedUser.getFirstName()).isEqualTo("Jan");
         assertThat(findedUser.getLastName()).isEqualTo("Kowalski");
+    }
+
+    @Test
+    public void shouldFindAllEntity() throws Exception {
+        //given
+
+        User user1 = new User();
+        user1.setUserId("0003");
+        user1.setFirstName("Michał");
+        user1.setLastName("Kajko");
+        user1.setCity("Milan");
+
+        User user2 = new User();
+        user2.setUserId("0004");
+        user2.setFirstName("Paweł");
+        user2.setLastName("Sienkiewicz");
+        user2.setCity("Warsaw");
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sages");
+        EntityManager em = emf.createEntityManager();
+
+        //when
+        em.persist(user1);
+        em.persist(user2);
+
+        Query q = em.createQuery("Select p from User p");
+        List<User> results = q.getResultList();
+
+        em.close();
+        emf.close();
+
+        //then
+        assertThat(results).isNotNull();
+        assertThat(results.size()).isGreaterThan(1);
     }
 
 }
