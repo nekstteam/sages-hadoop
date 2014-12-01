@@ -52,9 +52,13 @@ public class KMeansExample {
 
 		List<List<Cluster>> Clusters = ClusterHelper.readClusters(conf, output);
 
-		for (Cluster cluster : Clusters.get(Clusters.size() - 1)) {
-			System.out.println("Cluster id: " + cluster.getId() + " center: "
-					+ cluster.getCenter().asFormatString());
+		for(List<Cluster> clusterList : Clusters){
+			for (Cluster cluster : clusterList) {
+				System.out.println("Cluster id: " + cluster.getId() + " center: "
+						+ cluster.getCenter().asFormatString());
+			}
+			System.out.println();
 		}
+
 	}
 }
