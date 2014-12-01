@@ -6,12 +6,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Before;
 import org.junit.Test;
 import pl.com.sages.hbase.api.loader.TableFactory;
+import pl.com.sages.hbase.api.loader.UserDataFactory;
 import pl.com.sages.hbase.api.model.User;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,6 +31,8 @@ public class UsersDaoTest {
         usersDao = new UsersDao(pool);
 
         TableFactory.recreateTable(configuration, Bytes.toString(UsersDao.TABLE_NAME), Bytes.toString(UsersDao.FAMILY_NAME));
+
+        UserDataFactory.insertTestData();
     }
 
     @Test
@@ -64,38 +64,7 @@ public class UsersDaoTest {
 
         //then
         assertThat(users).isNotNull();
-        assertThat(users.size()).isEqualTo(3);
-    }
-
-    @Test
-    public void shouldInsertBulkData() throws Exception {
-        //given
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("users/users.csv");
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String delimeter = ";";
-
-        while ((line = br.readLine()) != null) {
-
-            String[] userData = line.split(delimeter);
-
-            User user = new User();
-            user.setForename(userData[0]);
-            user.setSurname(userData[1]);
-            user.setEmail(userData[2]);
-            user.setPassword(userData[3]);
-
-            usersDao.save(user);
-
-        }
-
-        br.close();
-
-        //when
-
-        //then
-
+        assertThat(users.size()).isGreaterThan(3);
     }
 
 }

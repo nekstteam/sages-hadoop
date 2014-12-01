@@ -3,7 +3,7 @@ package org.datanucleus.samples.jdo.tutorial;
 import org.junit.Test;
 import pl.com.sages.hbase.jdo.datanucleus.Inventory;
 import pl.com.sages.hbase.jdo.datanucleus.Product;
-import pl.com.sages.hbase.jdo.datanucleus.Users;
+import pl.com.sages.hbase.jdo.datanucleus.User;
 
 import javax.jdo.*;
 
@@ -27,7 +27,7 @@ public class HbaseDatanucleusJdoTest {
         try {
             tx.begin();
 
-            Users user = new Users();
+            User user = new User();
             user.setBlob("kwjeow");
             user.setFirstName("Jan");
             user.setLastName("Kowalski");

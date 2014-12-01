@@ -11,6 +11,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 import org.junit.Test;
 import pl.com.sages.hbase.api.dao.UsersDao;
+import pl.com.sages.hbase.api.loader.UserDataFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +20,8 @@ public class CountUsersTest {
     @Test
     public void shouldRunMapReduce() throws Exception {
         //given
+        UserDataFactory.insertTestData();
+
         Configuration configuration = HBaseConfiguration.create();
         Job job = new Job(configuration, "Count Users");
         job.setJarByClass(CountUsersMapper.class);
@@ -41,7 +44,7 @@ public class CountUsersTest {
 
         //then
         assertThat(succeeded).isTrue();
-        assertThat(job.getCounters().findCounter(CountUsersMapper.Counters.USER_COUNT).getValue()).isGreaterThan(100);
+        assertThat(job.getCounters().findCounter(CountUsersMapper.Counters.USER_COUNT).getValue()).isGreaterThan(99);
     }
 
 }

@@ -2,25 +2,24 @@ package pl.com.sages.hbase.jdo.datanucleus;
 
 import javax.jdo.annotations.*;
 
-@PersistenceCapable(table = "users", schema = "info", catalog = "info")
+@PersistenceCapable(table = "users", schema = "users", catalog = "users")
 @Extensions({
         @Extension(vendorName = "datanucleus", key = "hbase.columnFamily.meta.bloomFilter", value = "ROWKEY"),
         @Extension(vendorName = "datanucleus", key = "hbase.columnFamily.meta.inMemory", value = "true"),
         @Extension(vendorName = "datanucleus", key = "hbase.table.sanity.checks", value = "false"),
 })
-public class Users {
+public class User {
 
-    @PrimaryKey(column = "info",
-            name = "info:id")
+    @PrimaryKey(column = "users", name = "users:id")
     private long id;
 
-    @Column(name = "info:blob")
+    @Column(name = "users:blob")
     private String blob;
 
-    @Column(name = "info:firstName")
+    @Column(name = "users:firstName")
     private String firstName;
 
-    @Column(name = "info:lastName")
+    @Column(name = "users:lastName")
     private String lastName;
 
     public long getId() {
