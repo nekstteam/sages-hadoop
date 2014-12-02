@@ -36,17 +36,22 @@ public class AllMovieDataMapper extends TableMapper<ImmutableBytesWritable, Put>
         for (Cell cell : cells) {
 
             String family = Bytes.toString(CellUtil.cloneFamily(cell));
-            System.out.println(family);
+            String column = Bytes.toString(CellUtil.cloneQualifier(cell));
+            System.out.println(family + ":" + column);
 
             if (family.equals(LoadMovieData.FAMILY_NAME)) {
 
                 movieId = Bytes.toString(cell.getRow());
-                movieTitle = Bytes.toString(CellUtil.cloneValue(cell));
-                System.out.println(movieId + "::" + movieTitle);
+
+                if(LoadMovieData.TITLE.equals(column)){
+                    movieTitle = Bytes.toString(CellUtil.cloneValue(cell));
+                    System.out.println(movieId + "::" + movieTitle);
+                } else if(LoadMovieData.GENRES.equals(column)){
+                    movieGenres = Bytes.toString(CellUtil.cloneValue(cell));
+                    System.out.println(movieId + "::" + movieGenres);
+                }
 
             } else if (family.equals(LoadMovieRatingData.FAMILY_NAME)) {
-
-                String column = Bytes.toString(CellUtil.cloneQualifier(cell));
 
                 int ratingId = Bytes.toInt(cell.getRow());
                 if (column.equals(LoadMovieRatingData.MOVIE_ID)) {
@@ -68,9 +73,10 @@ public class AllMovieDataMapper extends TableMapper<ImmutableBytesWritable, Put>
         Put put = new Put(Bytes.toBytes(movieId));
 
         if (movieTitle != null) {
-            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("title"), Bytes.toBytes(movieTitle));
-        } else if(movieRating != null){
-            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes("rating"), Bytes.toBytes(movieRating));
+            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(LoadMovieData.TITLE), Bytes.toBytes(movieTitle));
+            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(LoadMovieData.GENRES), Bytes.toBytes(movieTitle));
+        } else if (movieRating != null) {
+            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(LoadMovieRatingData.RATING), Bytes.toBytes(movieRating));
         } else {
             throw new RuntimeException("Brak danych!");
         }
