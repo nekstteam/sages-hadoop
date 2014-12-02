@@ -46,11 +46,25 @@ Wysyłasz sobie 3 pliki na hortona:
 -workflow.xml
 -job.properties
 
-dla wygody umieść sobie wszystko na localhost w katalogu:
+(masz to spakowane dla wygody w folderze resource)
+Wysyłamy na hortona:
+scp -P 2222 pagerank.tar root@localhost:/tmp
+
+dla wygody umieść sobie wszystko na localhost w katalogu: (pod root bo chyba on ma tylko prawa zapisu)
 cd /usr/share/doc/oozie-4.0.0.2.1.1.0/       tam jest:   examples/apps/
 do apps wrzucasz pusty katalog "pagerank"
 do niego workflow.xml i job.properties
 następwnie w nim katalog "lib" i do niego .jar
+
+tak aby było: 
+--- apps/pagerank
+            job.properties
+            workflow.xml
+            ^------ lib
+            			pagerank.jar
+            			
+            			
+             
 
 a następnie jako użytkownik "oozie"  (su oozie)
 cd /usr/share/doc/oozie-4.0.0.2.1.1.0/
@@ -58,7 +72,9 @@ hadoop fs -rmr examples/apps/pagerank   (usuwanie gdyby tam już coś było)
 hadoop fs -copyFromLocal examples/apps/pagerank examples/apps/pagerank
 
 plik: pages.txt też jako użytkownik oozie umieszczasz w katalogu na hdfs:
-/user/oozie/examples/input-data/text2/pages.txt
+(/user/oozie/)  examples/input-data/text2/pages.txt
+hadoop fs -rmr examples/input-data/text2
+hadoop fs -copyFromLocal pages.txt examples/input-data/text2
 
 możliwe że bedziesz potrzebował polecenia hadoop fs -mkdir examples/input-data/text2
 
