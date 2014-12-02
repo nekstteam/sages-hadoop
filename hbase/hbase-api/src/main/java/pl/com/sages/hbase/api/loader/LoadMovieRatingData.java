@@ -38,7 +38,7 @@ public class LoadMovieRatingData {
         String delimeter = "::";
 
         //UserID::MovieID::Rating::Timestamp
-        int id = 1;
+        int ratingId = 1;
         while ((line = br.readLine()) != null) {
 
             String[] movieData = line.split(delimeter);
@@ -47,16 +47,16 @@ public class LoadMovieRatingData {
             Double rating = Double.parseDouble(movieData[2]);
             String timestamp = movieData[3];
 
-//            System.out.println(id + " -> " + userId + "::" + movieId + "::" + rating);
-            if (id % 1000 == 0) {
-                System.out.println("Wczytano " + id + " wierszy");
+//            System.out.println(ratingId + " -> " + userId + "::" + movieId + "::" + rating);
+            if (ratingId % 1000 == 0) {
+                System.out.println("Wczytano " + ratingId + " wierszy");
             }
 
-            if (id > 10000) {
+            if (ratingId > 10000) {
                 break; // wczytujemy tylko pierwsze 10 tys wierszy
             }
 
-            Put put = new Put(Bytes.toBytes(id++));
+            Put put = new Put(Bytes.toBytes(ratingId++));
             put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(MOVIE_ID), Bytes.toBytes(movieId));
             put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(RATING), Bytes.toBytes(rating));
 
