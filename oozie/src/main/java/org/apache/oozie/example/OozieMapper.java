@@ -26,6 +26,11 @@ import org.apache.hadoop.mapred.Reporter;
 
 import java.io.IOException;
 
+/**
+ * Na wejściu <key: byte od początku strony value: strona badana [tab] linki na niej występujące oddzielone przecinkami>. W maperze produkujemy odwrotne
+ * skierowania: strona wkazywana -> strona na której wystąpił link
+ */
+
 @SuppressWarnings("deprecation")
 public class OozieMapper implements Mapper<LongWritable, Text, Text, Text> {
 

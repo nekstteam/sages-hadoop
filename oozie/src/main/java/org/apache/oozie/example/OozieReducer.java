@@ -27,6 +27,10 @@ import org.apache.hadoop.mapred.Reporter;
 import java.io.IOException;
 import java.util.Iterator;
 
+/**
+ * W reduktorze zbieramy wyniki i dokonujemy podsumowania
+ */
+
 public class OozieReducer implements Reducer<Text, Text, LongWritable, Text> {
 
 	public void configure(JobConf jobConf) {
