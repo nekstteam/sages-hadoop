@@ -61,7 +61,7 @@ public class AllMovieDataTest {
         scans.add(scan1);
 
         Scan scan2 = new Scan();
-        scan2.setAttribute(Scan.SCAN_ATTRIBUTES_TABLE_NAME, Bytes.toBytes(LoadMovieRatingData.TABLE_NAME));
+        scan2.setAttribute(Scan.SCAN_ATTRIBUTES_TABLE_NAME, Bytes.toBytes("ratingaverage"));
         scans.add(scan2);
 
         TableMapReduceUtil.initTableMapperJob(scans,

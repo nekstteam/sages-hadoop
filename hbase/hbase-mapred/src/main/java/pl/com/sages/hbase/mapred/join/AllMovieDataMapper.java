@@ -9,6 +9,7 @@ import org.apache.hadoop.hbase.mapreduce.TableMapper;
 import org.apache.hadoop.hbase.util.Bytes;
 import pl.com.sages.hbase.api.loader.LoadMovieData;
 import pl.com.sages.hbase.api.loader.LoadMovieRatingData;
+import pl.com.sages.hbase.mapred.movies.AverageRatingReducer;
 
 import java.io.IOException;
 
@@ -18,7 +19,10 @@ public class AllMovieDataMapper extends TableMapper<ImmutableBytesWritable, Put>
     public static final String FAMILY_NAME = "movies_data";
 
     public void map(ImmutableBytesWritable row, Result value, Context context) throws IOException, InterruptedException {
-        context.write(row, resultToPut(row, value));
+        Put put = resultToPut(row, value);
+        if (put != null) {
+            context.write(row, put);
+        }
     }
 
     private static Put resultToPut(ImmutableBytesWritable key, Result result) throws IOException {
@@ -43,26 +47,24 @@ public class AllMovieDataMapper extends TableMapper<ImmutableBytesWritable, Put>
 
                 movieId = Bytes.toString(cell.getRow());
 
-                if(LoadMovieData.TITLE.equals(column)){
+                if (LoadMovieData.TITLE.equals(column)) {
+
                     movieTitle = Bytes.toString(CellUtil.cloneValue(cell));
                     System.out.println(movieId + "::" + movieTitle);
-                } else if(LoadMovieData.GENRES.equals(column)){
+
+                } else if (LoadMovieData.GENRES.equals(column)) {
                     movieGenres = Bytes.toString(CellUtil.cloneValue(cell));
                     System.out.println(movieId + "::" + movieGenres);
                 }
 
-            } else if (family.equals(LoadMovieRatingData.FAMILY_NAME)) {
+            } else if (family.equals("ratingaverage")) {
 
-                int ratingId = Bytes.toInt(cell.getRow());
-                if (column.equals(LoadMovieRatingData.MOVIE_ID)) {
-
-                    movieId = Bytes.toString(CellUtil.cloneValue(cell));
-                    System.out.println(ratingId + "::" + movieId);
-
-                } else if (column.equals(LoadMovieRatingData.RATING)) {
+                movieId = Bytes.toString(cell.getRow());
+                System.out.println(movieId);
+                if (column.equals("average")) {
 
                     movieRating = Bytes.toDouble(CellUtil.cloneValue(cell));
-                    System.out.println(ratingId + "::" + movieRating);
+                    System.out.println(movieId + "::" + movieRating);
 
                 }
 
@@ -70,15 +72,15 @@ public class AllMovieDataMapper extends TableMapper<ImmutableBytesWritable, Put>
 
         }
 
-        Put put = new Put(Bytes.toBytes(movieId));
+        Put put = null;
 
         if (movieTitle != null) {
+            put = new Put(Bytes.toBytes(movieId));
             put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(LoadMovieData.TITLE), Bytes.toBytes(movieTitle));
-            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(LoadMovieData.GENRES), Bytes.toBytes(movieTitle));
+            put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(LoadMovieData.GENRES), Bytes.toBytes(movieGenres));
         } else if (movieRating != null) {
+            put = new Put(Bytes.toBytes(movieId));
             put.add(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(LoadMovieRatingData.RATING), Bytes.toBytes(movieRating));
-        } else {
-            throw new RuntimeException("Brak danych!");
         }
 
         return put;

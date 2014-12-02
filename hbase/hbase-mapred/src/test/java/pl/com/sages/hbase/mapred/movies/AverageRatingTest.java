@@ -51,7 +51,6 @@ public class AverageRatingTest {
                 TABLE_NAME,
                 AverageRatingReducer.class,
                 job);
-//        job.setNumReduceTasks(0);
 
         //when
         boolean succeeded = job.waitForCompletion(true);
@@ -69,7 +68,7 @@ public class AverageRatingTest {
         for (Result result : results) {
             byte[] id = result.getRow();
             byte[] average = result.getValue(Bytes.toBytes(FAMILY_NAME), AverageRatingReducer.AVERAGE);
-//            System.out.println(Bytes.toString(id) + " " + Bytes.toDouble(average));
+            System.out.println(Bytes.toString(id) + " " + Bytes.toDouble(average));
             count++;
         }
 
