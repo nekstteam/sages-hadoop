@@ -1,0 +1,63 @@
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="map-reduce-wf">
+	<start to="mr-node" />
+	<action name="mr-node">
+		<map-reduce>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<prepare>
+				<delete
+					path="${nameNode}/user/${wf:user()}/${examplesRoot}/output-data/${outputDir}" />
+			</prepare>
+			<configuration>
+				<property>
+					<name>mapred.job.queue.name</name>
+					<value>${queueName}</value>
+				</property>
+				<property>
+					<name>mapred.mapper.class</name>
+					<value>org.apache.oozie.example.OozieMapper</value>
+				</property>
+				<property>
+					<name>mapred.reducer.class</name>
+					<value>oorg.apache.oozie.example.OozieReducer</value>
+				</property>
+				<property>
+					<name>mapred.map.tasks</name>
+					<value>1</value>
+				</property>
+				<property>
+					<name>mapred.input.dir</name>
+					<value>/user/${wf:user()}/${examplesRoot}/input-data/text2</value>
+				</property>
+				<property>
+					<name>mapred.mapoutput.key.class</name>
+					<value>org.apache.hadoop.io.Text</value>
+				</property>
+				<property>
+					<name>mapred.mapoutput.value.class</name>
+					<value>org.apache.hadoop.io.Text</value>
+				</property>
+				<property>
+					<name>mapred.output.key.class</name>
+					<value>org.apache.hadoop.io.LongWritable</value>
+				</property>
+				<property>
+					<name>mapred.output.value.class</name>
+					<value>org.apache.hadoop.io.Text</value>
+				</property>
+				<property>
+					<name>mapred.output.dir</name>
+					<value>/user/${wf:user()}/${examplesRoot}/output-data/${outputDir}
+					</value>
+				</property>
+			</configuration>
+		</map-reduce>
+		<ok to="end" />
+		<error to="fail" />
+	</action>
+	<kill name="fail">
+		<message>Map/Reduce failed, error
+			message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+	</kill>
+	<end name="end" />
+</workflow-app>
