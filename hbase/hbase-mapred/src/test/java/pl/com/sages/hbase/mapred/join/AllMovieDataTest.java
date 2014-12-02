@@ -23,8 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AllMovieDataTest {
 
-    public static final String TABLE_NAME = "movies_data";
-    public static final String FAMILY_NAME = "movies_data";
+    public static final String TABLE_NAME = AllMovieDataMapper.TABLE_NAME;
+    public static final String FAMILY_NAME = AllMovieDataMapper.FAMILY_NAME;
 
     private Configuration configuration = HBaseConfiguration.create();
 
