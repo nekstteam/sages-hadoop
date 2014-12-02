@@ -115,11 +115,12 @@ public class HbaseJpaKunderaTest {
 
         //when
         em.persist(user);
+
+        //then
         User findedUser = em.find(User.class, "0005");
         em.close();
         emf.close();
 
-        //then
         assertThat(findedUser).isNotNull();
         assertThat(findedUser.getFirstName()).isEqualTo("Jan");
         assertThat(findedUser.getLastName()).isEqualTo("Kowalski");

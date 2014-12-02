@@ -1,6 +1,7 @@
 package pl.com.sages.hbase.mapred.filter;
 
-import org.apache.hadoop.hbase.KeyValue;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
@@ -17,11 +18,15 @@ public class FilterMapper extends TableMapper<ImmutableBytesWritable, Put> {
 
     private static Put resultToPut(ImmutableBytesWritable key, Result result) throws IOException {
         Put put = new Put(key.get());
-        for (KeyValue kv : result.raw()) {
-//            System.out.println(Bytes.toString(kv.getKey()));
-//            System.out.println(kv.getValue());
-            put.add(kv);
+
+        Cell[] cells = result.rawCells();
+        for (Cell cell : cells) {
+//            String movieId = Bytes.toString(cell.getRow());
+//            String title = Bytes.toString(CellUtil.cloneValue(cell));
+//            System.out.println(movieId + "::" + title);
+            put.add(cell);
         }
+
         return put;
     }
 

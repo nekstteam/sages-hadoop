@@ -7,9 +7,8 @@
     <!-- JDO Sages "unit" -->
     <persistence-unit name="Sages">
 
-        <!--<class>pl.com.sages.hbase.jdo.datanucleus.Inventory</class>-->
-        <!--<class>pl.com.sages.hbase.jdo.datanucleus.Product</class>-->
-        <!--<class>pl.com.sages.hbase.jdo.datanucleus.Book</class>-->
+        <class>pl.com.sages.hbase.jdo.datanucleus.Inventory</class>
+        <class>pl.com.sages.hbase.jdo.datanucleus.Product</class>
         <class>pl.com.sages.hbase.jdo.datanucleus.User</class>
 
         <exclude-unlisted-classes/>

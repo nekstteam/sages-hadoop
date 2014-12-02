@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import pl.com.sages.hbase.api.loader.LoadMovieData;
 import pl.com.sages.hbase.api.loader.LoadMovieRatingData;
-import pl.com.sages.hbase.mapred.filter.FilterMapper;
 import pl.com.sages.hbase.mapred.movies.AverageRatingMapper;
 
 import java.io.IOException;
@@ -22,10 +21,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UnionTest {
+public class AllMovieDataTest {
 
-    public static final String TABLE_NAME = "movies_with_rating";
-    public static final String FAMILY_NAME = "movies_with_rating";
+    public static final String TABLE_NAME = AllMovieDataMapper.TABLE_NAME;
+    public static final String FAMILY_NAME = AllMovieDataMapper.FAMILY_NAME;
 
     private Configuration configuration = HBaseConfiguration.create();
 
@@ -52,7 +51,7 @@ public class UnionTest {
     public void shouldJoinTables() throws Exception {
         //given
 
-        Job job = new Job(configuration, "Joins");
+        Job job = new Job(configuration, "All movie data");
         job.setJarByClass(AverageRatingMapper.class);
 
         List<Scan> scans = new ArrayList<>();
@@ -66,11 +65,10 @@ public class UnionTest {
         scans.add(scan2);
 
         TableMapReduceUtil.initTableMapperJob(scans,
-                FilterMapper.class,
+                AllMovieDataMapper.class,
                 null,
                 null,
                 job);
-//        FileOutputFormat.setOutputPath(job, new Path("/tmp/sages/movies_with_ratings_" + System.currentTimeMillis()));
         TableMapReduceUtil.initTableReducerJob(
                 TABLE_NAME,
                 null,
