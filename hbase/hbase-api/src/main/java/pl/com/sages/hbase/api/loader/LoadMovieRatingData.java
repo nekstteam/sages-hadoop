@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class LoadMovieRatingData {
 
-    public static final String RATING_DATA = "/home/radek/Sages/dane/ml-10M100K/ratings.dat";
+    public static final String RATING_DATA = "/home/sages/Sages/dane/ml-10M100K/ratings.dat";
 
     public static final String TABLE_NAME = "ratings";
     public static final String FAMILY_NAME = "ratings";
