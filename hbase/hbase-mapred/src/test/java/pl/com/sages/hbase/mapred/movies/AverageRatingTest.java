@@ -35,6 +35,8 @@ public class AverageRatingTest {
         Job job = new Job(configuration, "Average Rating");
         job.setJarByClass(AverageRatingMapper.class);
 
+        job.setMapperClass(AverageRatingMapper.class);
+
         Scan scan = new Scan();
         scan.setCaching(500);
         scan.setCacheBlocks(false);

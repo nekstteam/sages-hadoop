@@ -17,9 +17,11 @@
         <jdk.version>1.7</jdk.version>
 
         <!--<hbase.version>0.99.0</hbase.version>-->
-        <hbase.version>0.98.0-hadoop2</hbase.version>
-        <mahout.version>0.9</mahout.version>
+        <!--<hbase.version>0.98.0-hadoop2</hbase.version>-->
+        <hbase.version>0.98.4-hadoop2</hbase.version>
         <!--<hbase.version>0.98.0-hadoop1</hbase.version>-->
+
+        <mahout.version>0.9</mahout.version>
     </properties>
 
     <modules>
