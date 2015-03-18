@@ -1,0 +1,34 @@
+
+su oozie
+
+cd /usr/share/doc/oozie-4.0.0.2.1.1.0/
+
+# wrzucenie danych do hdfs'a
+hadoop fs -put examples examples
+
+oozie job -oozie http://localhost:11000/oozie -config examples/apps/map-reduce/job.properties -run
+
+# sprawdzenie stanu:
+oozie job -oozie http://localhost:11000/oozie -info
+
+# kody źródłowe
+cd /usr/share/doc/oozie-4.0.0.2.1.1.0/examples/src
+
+
+# własny example
+#scp -P 2222 pagerank.tar root@localhost:/tmp
+scp -r -P 2222 src/main/resources/deploy root@localhost:/tmp
+
+# na wszelki wypadek usuwamy dane z hdfs'a
+hadoop fs -rmr examples/apps/pagerank
+
+#wrzucamy projekt na hdfs'a
+hadoop fs -copyFromLocal /tmp/deploy/pagerank examples/apps/pagerank
+
+# wrzucamy dane na hdfs'a
+# hadoop fs -mkdir examples/input-data/text2
+# hadoop fs -rmr examples/input-data/text2
+hadoop fs -copyFromLocal /tmp/deploy/pages.txt examples/input-data/text2
+
+# uruchamiamy:
+oozie job -oozie http://localhost:11000/oozie -config /tmp/deploy/pagerank/job.properties -run
