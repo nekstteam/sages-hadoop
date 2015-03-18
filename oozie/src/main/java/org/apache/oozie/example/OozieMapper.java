@@ -43,9 +43,12 @@ public class OozieMapper implements Mapper<LongWritable, Text, Text, Text> {
 		if (row.length != 2)
 			return;
 
-		String[] siteCollection = row[1].split(",");
-		for (String site : siteCollection) {
-			collector.collect(new Text(site), new Text(row[0]));
+        String page = row[0];
+        String sites = row[1];
+
+        String[] siteCollection = sites.split(",");
+        for (String site : siteCollection) {
+            collector.collect(new Text(site), new Text(page));
 		}
 	}
 
