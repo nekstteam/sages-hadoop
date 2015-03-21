@@ -12,27 +12,40 @@
     <url>http://maven.apache.org</url>
 
     <properties>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <jdk.version>1.7</jdk.version>
 
-        <!--<hbase.version>0.99.0</hbase.version>-->
-        <!--<hbase.version>0.98.0-hadoop2</hbase.version>-->
+        <hadoop.version>2.6.0</hadoop.version>
         <hbase.version>0.98.4-hadoop2</hbase.version>
-        <!--<hbase.version>0.98.0-hadoop1</hbase.version>-->
-
         <mahout.version>0.9</mahout.version>
+
     </properties>
 
     <modules>
         <module>hbase</module>
         <module>mahout</module>
+        <module>oozie</module>
         <module>flume</module>
+        <module>mapreduce</module>
     </modules>
 
     <dependencyManagement>
 
         <dependencies>
+
+            <!--Hadop-->
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-common</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
 
             <!--HBase-->
             <dependency>
