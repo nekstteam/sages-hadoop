@@ -5,6 +5,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.io.IOUtils;
+import org.apache.hadoop.util.Progressable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -83,10 +84,34 @@ public class ApiTest {
         // given
         String inputPath = "/home/sages/Sages/dane/iris.csv";
         String outputPath = "/tmp/hdfs-write-test.txt";
+//        fs.delete(new Path(outputPath), true);
+
+        // when
+        FSDataOutputStream outputStream = fs.create(new Path(outputPath), true);
+//        FSDataOutputStream outputStream = fs.append(new Path(outputPath));
+        try {
+            IOUtils.copyBytes(new FileInputStream(new File(inputPath)), outputStream, 4096);
+        } finally {
+            IOUtils.closeStream(outputStream);
+        }
+
+        // then
+        Assert.assertTrue(fs.exists(new Path(outputPath)));
+    }
+
+    @Test
+    public void shouldWriteFileWithProgress() throws Exception {
+        String inputPath = "/home/sages/Sages/dane/iris.csv";
+        String outputPath = "/tmp/hdfs-write-test.txt";
         fs.delete(new Path(outputPath), true);
 
         // when
-        FSDataOutputStream outputStream = fs.create(new Path(outputPath));
+        FSDataOutputStream outputStream = fs.create(new Path(outputPath), new Progressable() {
+            @Override
+            public void progress() {
+                System.out.println("Trawa zapis pliku...");
+            }
+        });
         try {
             IOUtils.copyBytes(new FileInputStream(new File(inputPath)), outputStream, 4096);
         } finally {
