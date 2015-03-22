@@ -1,6 +1,7 @@
 package pl.com.sages.hadoop.mapreduce.invertedindex;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -18,6 +19,9 @@ public class InvertedIndexRunner {
 
         Path outputPath = new Path(args[1]);
         System.out.println(outputPath);
+
+        FileSystem fs = FileSystem.get(new Configuration());
+        fs.delete(outputPath, true);
 
         Job job = createJob(inputPath, outputPath);
 

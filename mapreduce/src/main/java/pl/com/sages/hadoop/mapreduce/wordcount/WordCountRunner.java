@@ -1,6 +1,7 @@
 package pl.com.sages.hadoop.mapreduce.wordcount;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -19,6 +20,9 @@ public class WordCountRunner {
 
         Path outputPath = new Path(args[1]);
         System.out.println(outputPath);
+
+        FileSystem fs = FileSystem.get(new Configuration());
+        fs.delete(outputPath, true);
 
         Job job = createJob(inputPath, outputPath);
 

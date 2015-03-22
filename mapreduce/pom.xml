@@ -60,7 +60,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>pl.com.sages.hadoop.mapreduce.wordcount.WordCountRunner</mainClass>
+                            <mainClass>pl.com.sages.hadoop.mapreduce.MapReduceRunner</mainClass>
                         </manifest>
                     </archive>
 
