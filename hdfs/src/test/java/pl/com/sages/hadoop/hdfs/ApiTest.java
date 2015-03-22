@@ -1,16 +1,15 @@
 package pl.com.sages.hadoop.hdfs;
 
+import junit.framework.Assert;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.*;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,6 +76,25 @@ public class ApiTest {
 
         // then
         assertThat(new File(outputPath)).exists();
+    }
+
+    @Test
+    public void shouldWriteFile() throws Exception {
+        // given
+        String inputPath = "/home/sages/Sages/dane/iris.csv";
+        String outputPath = "/tmp/hdfs-write-test.txt";
+        fs.delete(new Path(outputPath), true);
+
+        // when
+        FSDataOutputStream outputStream = fs.create(new Path(outputPath));
+        try {
+            IOUtils.copyBytes(new FileInputStream(new File(inputPath)), outputStream, 4096);
+        } finally {
+            IOUtils.closeStream(outputStream);
+        }
+
+        // then
+        Assert.assertTrue(fs.exists(new Path(outputPath)));
     }
 
 }
