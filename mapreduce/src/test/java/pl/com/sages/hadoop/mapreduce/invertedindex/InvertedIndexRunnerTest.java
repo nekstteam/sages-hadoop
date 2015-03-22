@@ -5,10 +5,8 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 import org.junit.Test;
-import pl.com.sages.hadoop.mapreduce.wordcount.WordCountReducer;
-import pl.com.sages.hadoop.mapreduce.wordcount.WordCountRunner;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class InvertedIndexRunnerTest {
 
@@ -27,7 +25,8 @@ public class InvertedIndexRunnerTest {
         job.waitForCompletion(true);
 
         //then
-
+        assertTrue(fs.exists(new Path(OUTPUT_PATH + "/_SUCCESS")));
+        assertTrue(fs.exists(new Path(OUTPUT_PATH + "/part-r-00000")));
     }
 
 }

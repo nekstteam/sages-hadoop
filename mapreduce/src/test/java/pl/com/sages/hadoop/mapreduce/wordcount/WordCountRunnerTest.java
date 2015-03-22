@@ -6,6 +6,8 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 public class WordCountRunnerTest {
 
     public static final String INPUT_PATH = "/home/sages/Sages/dane/lektury-100/";
@@ -23,7 +25,8 @@ public class WordCountRunnerTest {
         job.waitForCompletion(true);
 
         //then
-
+        assertTrue(fs.exists(new Path(OUTPUT_PATH + "/_SUCCESS")));
+        assertTrue(fs.exists(new Path(OUTPUT_PATH + "/part-r-00000")));
     }
 
 }
