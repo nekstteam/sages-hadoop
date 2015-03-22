@@ -1,0 +1,19 @@
+
+Uruchomienie na klastrze
+
+1. Wrzucamy nasze dane na hdfs'a
+
+hdfs dfs -copyFromLocal /home/sages/Sages/dane/lektury /user/sages/
+hdfs dfs -copyFromLocal /home/sages/Sages/dane/lektury_all/ /user/sages/
+
+2. Uruchomienie projektu
+#hadoop jar /home/sages/Sages/sages-hadoop/mapreduce/target/mapreduce-1.0-SNAPSHOT-jar-with-dependencies.jar /user/sages/lektury /user/sages/lektury-output
+hadoop jar /home/sages/Sages/sages-hadoop/mapreduce/target/mapreduce-1.0-SNAPSHOT-jar-with-dependencies.jar /user/sages/lektury_all /user/sages/lektury_all-output
+
+3 Jesli chcemy usunąć to co wcześniej wrzuciliśmy (dane plus wyniki)
+
+hdfs dfs -rm -f -r -skipTrash /user/sages/lektury
+hdfs dfs -rm -f -r -skipTrash /user/sages/lektury_all
+
+hdfs dfs -rm -f -r -skipTrash /user/sages/lektury-output
+hdfs dfs -rm -f -r -skipTrash /user/sages/lektury_all-output
