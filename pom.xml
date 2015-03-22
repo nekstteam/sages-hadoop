@@ -46,6 +46,16 @@
                 <artifactId>hadoop-client</artifactId>
                 <version>${hadoop.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-mapreduce-client-core</artifactId>
+                <version>${hadoop.version}</version>
+            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.apache.hadoop</groupId>-->
+                <!--<artifactId>hadoop-core</artifactId>-->
+                <!--<version>1.2.1</version>-->
+            <!--</dependency>-->
 
             <!--HBase-->
             <dependency>
@@ -57,6 +67,20 @@
                 <groupId>org.apache.hbase</groupId>
                 <artifactId>hbase-client</artifactId>
                 <version>${hbase.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-common</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-client</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.hadoop</groupId>
+                        <artifactId>hadoop-mapreduce-client-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.hbase</groupId>

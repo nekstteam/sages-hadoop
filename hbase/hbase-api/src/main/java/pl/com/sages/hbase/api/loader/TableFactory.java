@@ -14,7 +14,9 @@ public abstract class TableFactory {
 
         boolean exists = admin.tableExists(tableName);
         if (exists) {
-            admin.disableTable(tableName);
+            if (!admin.isTableDisabled(tableName)) {
+                admin.disableTable(tableName);
+            }
             admin.deleteTable(tableName);
         }
 
