@@ -56,9 +56,33 @@ public class ApiTest {
         }
 
         // then
+        assertThat(files).contains("user");
         assertThat(files).contains("mapred");
         assertThat(files).contains("mr-history");
+    }
+
+    @Test
+    public void shouldListFilesWithFilter() throws Exception {
+        // given
+
+        // when
+        FileStatus[] fileStatuses = fs.listStatus(new Path("/"), new PathFilter() {
+            @Override
+            public boolean accept(Path path) {
+                return path.getName().equals("user");
+            }
+        });
+
+        List<String> files = new ArrayList<>();
+        for (FileStatus fileStatuse : fileStatuses) {
+            String filename = fileStatuse.getPath().getName();
+            files.add(filename);
+        }
+
+        // then
         assertThat(files).contains("user");
+        assertThat(files).doesNotContain("mapred");
+        assertThat(files).doesNotContain("mr-history");
     }
 
     @Test
@@ -147,6 +171,17 @@ public class ApiTest {
 
         // then
         Assert.assertTrue(created);
+    }
+
+    @Test
+    public void shouldNotToChangeNameToWrongFile() throws Exception {
+        // given
+
+        // when
+        boolean renamed = fs.rename(new Path("/this/file/does/not/exists"), new Path("/some/path/to/file"));
+
+        // then
+        Assert.assertFalse(renamed);
     }
 
 }
