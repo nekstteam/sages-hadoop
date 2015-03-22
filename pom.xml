@@ -29,6 +29,7 @@
         <module>oozie</module>
         <module>flume</module>
         <module>mapreduce</module>
+        <module>hdfs</module>
     </modules>
 
     <dependencyManagement>
