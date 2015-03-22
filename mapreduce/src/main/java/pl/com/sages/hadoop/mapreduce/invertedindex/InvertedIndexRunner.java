@@ -1,4 +1,4 @@
-package pl.com.sages.hadoop.mapreduce.wordcount;
+package pl.com.sages.hadoop.mapreduce.invertedindex;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -10,7 +10,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 import java.io.IOException;
 
-public class WordCountRunner {
+public class InvertedIndexRunner {
 
     public static void main(String[] args) throws Exception {
 
@@ -28,12 +28,12 @@ public class WordCountRunner {
     public static Job createJob(Path inputPath, Path outputPath) throws IOException {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "word count");
-        job.setJarByClass(WordCountRunner.class);
-        job.setMapperClass(WordCountMapper.class);
-        job.setCombinerClass(WordCountReducer.class);
-        job.setReducerClass(WordCountReducer.class);
+        job.setJarByClass(InvertedIndexRunner.class);
+        job.setMapperClass(InvertedIndexMapper.class);
+        job.setCombinerClass(InvertedIndexReducer.class);
+        job.setReducerClass(InvertedIndexReducer.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(IntWritable.class);
+        job.setOutputValueClass(Text.class);
         FileInputFormat.addInputPath(job, inputPath);
         FileOutputFormat.setOutputPath(job, outputPath);
         return job;
