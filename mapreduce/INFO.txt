@@ -1,5 +1,5 @@
 
-Uruchomienie na klastrze
+WordCount
 
 1. Wrzucamy nasze dane na hdfs'a
 
