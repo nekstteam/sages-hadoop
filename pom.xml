@@ -81,23 +81,32 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>1.7.0</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.10</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.mrunit</groupId>
+                <artifactId>mrunit</artifactId>
+                <version>1.1.0</version>
+                <classifier>hadoop2</classifier>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
 
     </dependencyManagement>
 
-    <!--<repositories>-->
-        <!--<repository>-->
-            <!--<id>apache release</id>-->
-            <!--<url>https://repository.apache.org/content/repositories/releases/</url>-->
-        <!--</repository>-->
-    <!--</repositories>-->
+    <repositories>
+        <repository>
+            <id>apache release</id>
+            <url>https://repository.apache.org/content/repositories/releases/</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
