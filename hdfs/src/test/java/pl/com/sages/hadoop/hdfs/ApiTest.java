@@ -184,4 +184,29 @@ public class ApiTest {
         Assert.assertFalse(renamed);
     }
 
+    @Test
+    public void shouldSetAndGetReplication() throws Exception {
+        // given
+
+        // when
+        fs.setReplication(new Path(HDFS_INPUT_PATH), (short) 3);
+        FileStatus fileStatus = fs.getFileStatus(new Path(HDFS_INPUT_PATH));
+        short replication = fileStatus.getReplication();
+
+        // then
+        assertThat(replication).isEqualTo((short) 3);
+    }
+
+    @Test
+    public void shouldManageBlockLocation() throws Exception {
+        // given
+
+        // when
+        FileStatus fileStatus = fs.getFileStatus(new Path(HDFS_INPUT_PATH));
+        BlockLocation[] fileBlockLocations = fs.getFileBlockLocations(fileStatus, 0, fileStatus.getLen());
+
+        // then
+        assertThat(fileBlockLocations.length).isGreaterThanOrEqualTo(1);
+    }
+
 }
