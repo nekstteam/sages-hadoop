@@ -9,7 +9,7 @@ Title STRING,
 Genres STRING)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '@';
 
-LOAD DATA INPATH '/user/sages/dane/movie/movies.dat'
+LOAD DATA LOCAL INPATH '/home/sages/Sages/dane/movie/movies.dat'
 OVERWRITE INTO TABLE movies;
 
 
