@@ -31,7 +31,7 @@ drop table if exists tags;
 CREATE TABLE IF NOT EXISTS tags (
 UserID STRING,
 MovieID STRING,
-Rating STRING,
+Tag STRING,
 Timestamp STRING)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '@';
 
