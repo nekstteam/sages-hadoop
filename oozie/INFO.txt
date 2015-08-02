@@ -1,0 +1,17 @@
+
+#vim examples/apps/map-reduce/job.properties
+
+su oozie
+cd /usr/hdp/2.2.0.0-2041/oozie/doc/examples
+
+hadoop fs -rm -f -r -skipTrash examples
+hadoop fs -put examples examples
+
+oozie job -oozie http://localhost:11000/oozie -config examples/apps/map-reduce/job.properties -run
+
+oozie job -oozie http://localhost:11000/oozie -kill 0000002-150802084145323-oozie-oozi-W
+
+
+
+
+/usr/hdp/2.2.0.0-2041/oozie/bin/oozie-stop.sh
