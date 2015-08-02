@@ -31,3 +31,17 @@ oozie jobs -oozie http://localhost:11000/oozie
 # zatrzymanie i uruchomienie ooziego
 /usr/hdp/2.2.0.0-2041/oozie/bin/oozie-stop.sh
 /usr/hdp/2.2.0.0-2041/oozie/bin/oozie-start.sh
+
+# przygotowanie zadania z projektu
+
+hdfs dfs -rm -f -r -skipTrash /user/sages/oozie
+hdfs dfs -mkdir -p /user/sages/oozie
+hdfs dfs -mkdir -p /user/sages/oozie/lib
+
+hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/oozie/target/oozie-1.0-SNAPSHOT.jar /user/sages/oozie/lib/
+hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/mapreduce/target/mapreduce-1.0-SNAPSHOT-jar-with-dependencies.jar /user/sages/oozie/lib/
+hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/oozie/src/main/resources/job.properties /user/sages/oozie/
+hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/oozie/src/main/resources/workflow.xml /user/sages/oozie/
+
+# uruchomienie zadania
+oozie job -oozie http://localhost:11000/oozie -config /home/sages/Sages/sages-hadoop/oozie/src/main/resources/job.properties -run
