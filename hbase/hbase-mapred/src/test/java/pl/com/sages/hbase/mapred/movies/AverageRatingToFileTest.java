@@ -29,7 +29,7 @@ public class AverageRatingToFileTest {
 
     @Before
     public void before() throws IOException {
-        TableFactory.recreateTable(configuration, TABLE_NAME, FAMILY_NAME);
+//        TableFactory.recreateTable(configuration, TABLE_NAME, FAMILY_NAME);
     }
 
     @Test
