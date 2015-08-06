@@ -17,8 +17,20 @@ SELECT count(*) FROM ratings;
 SELECT count(DISTINCT userid) FROM ratings;
 SELECT count(DISTINCT userid),count(DISTINCT movieid) FROM ratings;
 
+--zamiana na tablicę ze stringa
 select movieid, title, split(genres,"\\|") AS genre from movies limit 10;
 
+-- rozbicie tablicy per wiersz
+select explode(split(genres,"\\|")) AS genre from movies limit 10;
+
+-- lateral view
+select * from movies
+LATERAL VIEW explode(split(genres,"\\|")) adTable AS adid;
+
+-- lateral view z grupowaniem !!!!
+select *, count(1) from movies
+LATERAL VIEW explode(split(genres,"\\|")) latview AS gen
+GROUP BY gen;
 
 SELECT userid, movieid,
  CASE

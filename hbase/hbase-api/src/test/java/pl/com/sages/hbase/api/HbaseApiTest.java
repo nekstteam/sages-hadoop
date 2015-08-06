@@ -1,17 +1,16 @@
 package pl.com.sages.hbase.api;
 
+import junit.framework.Assert;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
-import org.apache.hadoop.hbase.client.HBaseAdmin;
-import org.apache.hadoop.hbase.client.HTable;
-import org.apache.hadoop.hbase.client.HTableInterface;
-import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
 import static pl.com.sages.hbase.api.conf.HbaseConfigurationFactory.getConfiguration;
 
 public class HbaseApiTest {
@@ -44,16 +43,26 @@ public class HbaseApiTest {
     @Test
     public void shouldPutDataOnHbase() throws Exception {
         //given
-        HTableInterface users = new HTable(configuration, TABLE_NAME);
-        Put put = new Put(Bytes.toBytes("id"));
-        put.add(Bytes.toBytes(FAMILY_NAME),
-                Bytes.toBytes("cell"),
-                Bytes.toBytes("nasza testowa wartość"));
+        String id = "id";
+        String cell = "cell";
+        String text = "nasza testowa wartość";
 
-        //when
+        HTableInterface users = new HTable(configuration, TABLE_NAME);
+        Put put = new Put(Bytes.toBytes(id));
+        put.add(Bytes.toBytes(FAMILY_NAME),
+                Bytes.toBytes(cell),
+                Bytes.toBytes(text));
         users.put(put);
 
+        //when
+        Get get = new Get(Bytes.toBytes(id));
+        get.addColumn(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(cell));
+
+        Result result = users.get(get);
+        byte[] value = result.getValue(Bytes.toBytes(FAMILY_NAME), Bytes.toBytes(cell));
+
         //then
+        assertEquals(text, new String(value));
     }
 
 }
