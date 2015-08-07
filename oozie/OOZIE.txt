@@ -42,6 +42,7 @@ hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/oozie/target/oozie-1.0-SN
 hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/mapreduce/target/mapreduce-1.0-SNAPSHOT-jar-with-dependencies.jar /user/sages/oozie/lib/
 hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/oozie/src/main/resources/job.properties /user/sages/oozie/
 hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/oozie/src/main/resources/workflow.xml /user/sages/oozie/
+hdfs dfs -copyFromLocal /home/sages/Sages/sages-hadoop/oozie/src/main/resources/hive-script.hql /user/sages/oozie/
 
 # uruchomienie zadania
 oozie job -oozie http://localhost:11000/oozie -config /home/sages/Sages/sages-hadoop/oozie/src/main/resources/job.properties -run

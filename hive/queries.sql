@@ -27,7 +27,7 @@ select explode(split(genres,"\\|")) AS genre from movies limit 10;
 select * from movies
 LATERAL VIEW explode(split(genres,"\\|")) adTable AS adid;
 
--- lateral view z grupowaniem !!!!
+-- lateral view z grupowaniem
 select *, count(1) from movies
 LATERAL VIEW explode(split(genres,"\\|")) latview AS gen
 GROUP BY gen;
@@ -56,3 +56,11 @@ select userid, avg(rating) from ratings GROUP BY userid HAVING avg(rating) >= 4 
 
 
 
+set hbase.zookeeper.quorum=sandbox.hortonworks.com
+set hbase.zookeeper.property.clientPort=2181
+set zookeeper.znode.parent=/hbase-unsecure
+
+CREATE TABLE foo(rowkey STRING, a STRING, b STRING)
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES ('hbase.columns.mapping' = ':key,f:c1,f:c2')
+TBLPROPERTIES ('hbase.table.name' = 'users');
