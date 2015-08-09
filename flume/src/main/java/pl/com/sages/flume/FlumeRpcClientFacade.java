@@ -22,6 +22,7 @@ class FlumeRpcClientFacade {
 
     public void sendDataToFlume(String data) {
         Event event = EventBuilder.withBody(data, Charset.forName("UTF-8"));
+        event.getHeaders().put("timestamp", String.valueOf(System.currentTimeMillis()));
 
         try {
             client.append(event);
